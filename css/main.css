@@ -1,0 +1,8 @@
+/*shopping cart*/
+#productList section.buy{
+	background: lightgoldenrodyellow;
+}
+
+#cart .cartInfo.hide,#cart #cartItem.hide{
+	display: none;
+}
