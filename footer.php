@@ -113,7 +113,7 @@
 
  <!-- Product list Template -->
  <script id="product-list-template-model" type="text/x-handlebars-template">
-    <li class='js-itemBox' data-id='{{id}}'> 
+    <li class='js-itemBox' data-productid='{{id}}' data-detailid="" data-title='{{title}}' data-maincat='{{category_main}}' data-subcat='{{category_sub}}'> 
     	<figure class="product">
     		<div class="product-discount">{{activity_text}}</div>
     		<div class="mediaholder">
@@ -161,6 +161,17 @@
 		</section>
 	</article>
 </div>
+</script>
+<script id="product_defPhotos_tmp" type="text/x-handlebars-template">
+	<p><img src="{{inner_photo1}}"></p>
+	<p><img src="{{inner_photo2}}"></p>
+	<p><img src="{{inner_photo3}}"></p>
+	<p><img src="{{inner_photo4}}"></p>
+</script>
+
+<script id="product_mainPhotos_tmp" type="text/x-handlebars-template">
+	<img class="rsImg" src="{{main_photo_substitute}}" data-rsTmb="{{main_photo_substitute}}" alt="" id="photo">
+	<img class="rsImg colorBox" src="{{color}}" data-rsTmb="{{color}} data-title='{{title}}'" alt="" d="photo">
 </script>
 
 </body>

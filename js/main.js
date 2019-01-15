@@ -5,9 +5,9 @@ $(document).ready(function() {
 	//建立模板產生、放置器 fill template function
 	function place_data($structure,$target,$data)
 	{
-		var html_structure = $($structure).html();
-		var compiled_template = Handlebars.compile(html_structure);
-		var UI = '';
+		var html_structure = $($structure).html(),
+			compiled_template = Handlebars.compile(html_structure),
+			UI = '';
 		$.each($data,function(index,data)
 		{
 			UI = UI + compiled_template(data);
@@ -15,6 +15,30 @@ $(document).ready(function() {
 		$($target).html(UI);
 		UI = '';
 	};
+
+	// 建立可塞選的模板產生器，用於點擊不同分類時 篩選基準category_main、sub
+	function Call_AJAX_place_data($info_to_send,$where_to_place,$structure,$func_to_do){
+		// console.log('Call_AJAX_place_data');
+
+		//判斷裡面是否為空，為空則抓取資料
+		if ($($where_to_place).find('.col-md-3').length == 0){
+			$.ajax({
+				type:'POST', //必填
+				url:'../crud/dataFiltered.php',
+				dataType:'json',
+				data:$info_to_send,
+				success:function(data){
+					place_data($structure,$where_to_place,data);
+				},
+				complete:function(){
+					if($func_to_do){
+						$func_to_do();
+					}
+				}
+
+			});
+		}
+	}
 
 	function Page_loader(e,$page_to_load,$after_load,$push='yes'){
 		// shut previous load thread
@@ -33,8 +57,8 @@ $(document).ready(function() {
 
 		if($push!='no' && $page_to_load !='../index_content.php'){
 			// 網址列須變更，否則視為同一頁?
-			var fill = $page_to_load;
-			var fill = fill.split('/')[1];
+			var fill = $page_to_load,
+				fill = fill.split('/')[1];
 			console.log('state',history.state);
 		}
 
@@ -66,6 +90,123 @@ $(document).ready(function() {
 		$('body a[href="#service-four"]').on('click',Call_AJAX_place_data({category_main:"kid"},'#service-four .row','#product-list-template-model'));
 		*/
 	}
+
+	function product_detail(e,$this,$push='yes'){
+		// 被選的商品 clicked item
+		var itemBox = $(e.target).closest('.js-itemBox');
+
+		// 換頁前先取得商品資料 fetch item info before leaving
+		if(e){
+			if($push!='no'){
+				e.preventDefault();
+				e.stopPropagation();
+				$push = 'yes';
+
+				// e存在&不要push時 代表是使用者點擊商品
+				var title = itemBox.data('title'),
+					mainCat = itemBox.data('maincat'),
+					price_org = itemBox.find('product-price').text(),
+					price_dis = itemBox.find('.js-disPrice').text(),
+					productId = itemBox.data('.productid'),
+					detailId = itemBox.data('.detailid');
+			}
+		}// e若不存在 使代表要用全域變數
+		
+		Page_loader(e,"product/product_detail.php",function(e){
+
+			// Do after_load
+			// Chane Breadcrumbs 
+			//**************IMPORTANT : Propagation !!******************
+			$('.js-maincat-ch').text(Category_translate(mainCat));
+			$('.js-maincat-en').text(mainCat);  
+			$('.price-org').text(price_org);
+			$('.price-dis').text(price_dis);
+			Call_AJAX_place_data({id:id,mode:'get_defPhotos'},'.js-defPhotos-putHere','#product_defPhotos_tmp');
+
+			// 載入替換的四張照片、設定對應色塊
+			Call_AJAX_place_data({id:id,mode:'get_mainPhotos'},'.js-mainPhotos-putHere','#product_mainPhotos_tmp',prodcut_detail_func);
+			
+		},$push);
+	}
+
+	// 主分類中譯
+	function Category_translate($EngName){
+		var Cat;
+		switch($EngName){
+			case 'men':
+				Cat = '男裝';
+				break; 
+			case 'women':
+				Cat ='女裝'
+				break;
+			case 'kid':
+				Cat ='童裝'
+				break;
+		}
+		return Cat;
+	}
+
+	//預先定義  載入Prodcut_detail 後 稍後要執行的fuction
+	function prodcut_detail_func($vars){
+		
+		// 將第一張設為active
+		$('.colorBox:first').addClass('active');
+		
+		// 載入右邊區塊
+		  // 將title	改為第一件的
+		  var title = $('.colorBox:first').data('title');
+		  $('.js-title').text(title);
+
+
+		  // 設定衣服Size avalible status (現有庫存)
+		  $.post('../crud/dataFiltered.php', {title:title,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
+		  		 // 訂定Size狀態
+		  		 $.each(data,function(key,value){
+		  		 	size = value["size"];
+		  		 	// :contains only accept text
+		  		 	$(".product_detail .p_size:contains('"+size+"')").addClass('avalible');
+		  		 });
+		  		 // 設定第一個為預設
+		  		 $(".product_detail .p_size:eq(0)").addClass('active');
+		  });
+		  
+     	   // 將商品編號改為第一件的
+		   var size = $('.p_size:eq(0)').text();
+		   var id = get_item_id(title,size,change_id)
+
+		  // 依第一件item id 修改size 區塊 
+	} 
+
+	//預先定義  載入Prodcut_detail 後 稍後要執行的fuction
+	function prodcut_detail_func($vars){
+		
+		// 將第一張設為active
+		$('.product_detail .p_color').find('a:eq(0) img').addClass('active');
+		
+		// 載入右邊區塊
+		  // 將title	改為第一件的
+		  var title = $('.product_detail .p_color').find('a:eq(0)').data('title');
+		  $('#icolor').text(title);
+
+
+		  // 設定衣服Size avalible status (現有庫存)
+		  $.post('../crud/dataFiltered.php', {title:title,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
+		  		 // 訂定Size狀態
+		  		 $.each(data,function(key,value){
+		  		 	size = value["size"];
+		  		 	// :contains only accept text
+		  		 	$(".product_detail .p_size:contains('"+size+"')").addClass('avalible');
+		  		 });
+		  		 // 設定第一個為預設
+		  		 $(".product_detail .p_size:eq(0)").addClass('active');
+		  });
+		  
+     	   // 將商品編號改為第一件的
+		   var size = $('.p_size:eq(0)').text();
+		   var id = get_item_id(title,size,change_id)
+
+		  // 依第一件item id 修改size 區塊 
+	} 
 
 	// InterFace UI/UX
 		function scrollTop(){
@@ -105,32 +246,27 @@ $(document).ready(function() {
 		e.preventDefault();
 		e.stopPropagation();
 		// 空購物車顯示訊息
-		var cartInfo = $('js-cartInfo');
-		// 購物車目前商品數 Number of items in cart
-		var itemCount = $('.js-cartItem').length; //.length 是否會略過display:none的item
-		// 空的購物車HTML　Empty Cart HTML
-		var itemRow = $('#js-cartItem').clone();
-		// 購物車的最後一筆 Last item in cart
-		var lastItem = $('.js-cartItem:last');
-		// 購物車現有金額 fetch current Cart total
-		var currentP = parseInt($('.cart-btn a span').text().slice(1));
-		// 被點擊的商品 Clicked Item Box
-		var itemBox = $(e.target).closest('.js-itemBox');
-		// 被選商品品名
-		var itemName = itemBox.find('h5').text();
-		// 被選商品ID
-		var itemId = itemBox.data('id');
-		// 折扣後金額 Discounted Price
-		var priceDis = itemBox.find('.js-disPrice').text().slice(1);
+		var cartInfo = $('.js-cartInfo'),
+			// 購物車目前商品數 Number of items in cart
+			itemCount = $('.js-cartItem').length, //.length 是否會略過display:none的item
+			// 空的購物車HTML　Empty Cart HTML
+			itemRow = $('#js-cartItem').clone(),
+			// 購物車的最後一筆 Last item in cart
+			lastItem = $('.js-cartItem:last'),
+			// 購物車現有金額 fetch current Cart total
+			currentP = parseInt($('.cart-btn a span').text().slice(1)),
+			// 被點擊的商品 Clicked Item Box
+			itemBox = $(e.target).closest('.js-itemBox');
+			// 被選商品品名
+			itemName = itemBox.find('h5').text(),
+			// 被選商品productid
+			productid = itemBox.data('productid'),
+			// 被選商品detailid
+			detailid = itemBox.data('detailid'),
+			// 折扣後金額 Discounted Price
+			priceDis = itemBox.find('.js-disPrice').text().slice(1);
 
-		// 變更訊息 顯示/隱藏
-		if(itemCount ==0){
-			cartInfo.addClass('hide');
-		}else if(itemCount >1){
-			if(cartInfo.hasClass('hide')){
-				cartInfo.toggleClass('hide');
-			}
-		}
+		
 
 		// 假如本商品有折扣 if discount exists
 		if(priceDis){
@@ -142,8 +278,6 @@ $(document).ready(function() {
 			
 		}
 		
-		
-
 		// 加入購物車/取消 buy or cancel 
 		var target = $(e.target).parent().next().find('section');
 		var itemNuber = parseInt($('#cart-amount').text());
@@ -157,24 +291,39 @@ $(document).ready(function() {
 		}else{
 			// renew total number
 			$('#cart-amount').text(++itemNuber);
-			// 購物車放入新的商品
-			itemRow.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide');
-			  // 修改標題
-			  itemRow.find('.js-itemTitle').text(itemName);
-			  // 修改金額
-			  itemRow.find('.js-itemPrice').text(price);
-			  // 加上ID
-			  itemRow.data('id',itemId);
+			
+			itemRow // 購物車放入新的商品
+				.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide')
+				// 修改標題
+				.find('.js-itemTitle').text(itemName)
+			  	// 修改金額
+			  	.find('.js-itemPrice').text(price)
+			  	// 加上productid、detailid
+				.attr({'productid':productid,'detailid':detailid});
 		}
 		
 
-		// set btn to red bgc
+		// set btn to yellow bgc
 		target.stop().toggleClass('buy');
 
 		// 更新最新總價renew total price
 		var newPrice = parseInt(price)+currentP;
 		$('.cart-btn a span').text('$'+newPrice+'元');
 
+		// 變更訊息 顯示/隱藏
+		if(itemCount ==1){ //只有template時
+			cartInfo.addClass('hide');
+		}else if(itemCount >=2){
+			if(!cartInfo.hasClass('hide')){
+				cartInfo.toggleClass('hide');
+			}
+		}
+	});
+
+
+	// 商品詳細頁點擊載入 - -- ALL
+	$('body').on('click','a[href="product/product_detail.html"]',function(e){
+		product_detail(e,this);
 	});
 });
 
