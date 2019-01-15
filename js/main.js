@@ -123,6 +123,14 @@ $(document).ready(function() {
 		// 折扣後金額 Discounted Price
 		var priceDis = itemBox.find('.js-disPrice').text().slice(1);
 
+		// 變更訊息 顯示/隱藏
+		if(itemCount ==0){
+			cartInfo.addClass('hide');
+		}else if(itemCount >1){
+			if(cartInfo.hasClass('hide')){
+				cartInfo.toggleClass('hide');
+			}
+		}
 
 		// 假如本商品有折扣 if discount exists
 		if(priceDis){
