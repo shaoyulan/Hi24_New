@@ -171,7 +171,7 @@
 
 <script id="product_mainPhotos_tmp" type="text/x-handlebars-template">
 	<img class="rsImg" src="{{main_photo_substitute}}" data-rsTmb="{{main_photo_substitute}}" alt="" id="photo">
-	<img class="rsImg colorBox" src="{{color}}" data-rsTmb="{{color}} data-title='{{title}}'" alt="" d="photo">
+	<img class="rsImg colorBox" src="{{color}}" data-rsTmb="{{color}}" data-title="{{title}}" alt="" d="photo">
 </script>
 
 </body>

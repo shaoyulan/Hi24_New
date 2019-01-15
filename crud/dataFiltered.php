@@ -31,9 +31,10 @@ if ($_POST['mode']=='2'){
 
 }elseif ($_POST['mode']=='product_item_detail_size') {
 	// 
-	$sql ='SELECT DISTINCT `size` FROM `product_item_detail` WHERE `title`=:title ORDER BY `size` ASC';
+	$sql ='SELECT DISTINCT `size` FROM `product_item_detail` WHERE `title`=:title AND `product_list_ref`=:`productId` ORDER BY `size` ASC';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':title',$_POST['title']);
+	$statement->bindValue(':product_list_ref',$_POST['productId']);
 
 }elseif ($_POST['mode']=='product_item_detail_id') {
 	$sql ='SELECT `item_id` FROM `product_item_detail` WHERE `title`=:title AND `size`=:size';

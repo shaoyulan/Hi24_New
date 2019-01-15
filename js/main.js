@@ -117,6 +117,7 @@ $(document).ready(function() {
 			// Do after_load
 			// Chane Breadcrumbs 
 			//**************IMPORTANT : Propagation !!******************
+			$('.title').data('productid').text(productId);
 			$('.js-maincat-ch').text(Category_translate(mainCat));
 			$('.js-maincat-en').text(mainCat);  
 			$('.price-org').text(price_org);
@@ -158,8 +159,8 @@ $(document).ready(function() {
 		  $('.js-title').text(title);
 
 
-		  // 設定衣服Size avalible status (現有庫存)
-		  $.post('../crud/dataFiltered.php', {title:title,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
+		  // 設定第一件衣服Size avalible status (現有庫存)
+		  $.post('../crud/dataFiltered.php', {title:title,productId:productId,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
 		  		 // 訂定Size狀態
 		  		 $.each(data,function(key,value){
 		  		 	size = value["size"];
