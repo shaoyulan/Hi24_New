@@ -3,6 +3,6 @@
 	background: lightgoldenrodyellow;
 }
 
-#cart .cartInfo.hide,#cart #cartItem.hide{
+#cart .js-cartInfo.hide,#cart #js-cartItem.hide{
 	display: none;
 }

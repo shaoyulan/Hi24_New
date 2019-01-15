@@ -113,7 +113,7 @@
 
  <!-- Product list Template -->
  <script id="product-list-template-model" type="text/x-handlebars-template">
-    <li> 
+    <li class='js-itemBox' data-id='{{id}}'> 
     	<figure class="product">
     		<div class="product-discount">{{activity_text}}</div>
     		<div class="mediaholder">
@@ -130,7 +130,7 @@
     			<section>
     				<span class="product-category">{{category_sub}}</span>
     				<h5>{{title}}</h5>
-    				<span class="{{discount}}">{{price_org}}<i>{{price_dis}}</i></span>
+    				<span class="{{discount}}">{{price_org}}<i class='js-disPrice'>{{price_dis}}</i></span>
     			</section>
     		</a>
     	</figure>
@@ -139,7 +139,7 @@
 
  <!-- Product list Template Categoried -->
 <script id="product-list-template" type="text/x-handlebars-template">
-<li><a href="product/product_detail.html">
+<li data-id='{{id}}'><a href="product/product_detail.html">
 	<img src="{{img_url1}}" alt="" />
 	<div class="product-list-desc">{{title}}<i>{{price_org}}<b>{{price_dis}}</b></i></div>
 </a></li>

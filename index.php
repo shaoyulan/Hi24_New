@@ -80,11 +80,11 @@
 					</div>
 
 						<ul>
-							<li class="cartInfo">購物車是空的</li>
-							<li id="cartItem" class="hide">
+							<li class="js-cartInfo">購物車是空的</li>
+							<li id="js-cartItem" class="js-cartItem hide">
 								<a href="product/product_detail.htm"><img src="images/small_product_list_08.jpg" alt="" /></a>
-								<a href="product/product_detail.htm">商品標題一</a>
-								<span>1 x $79.00</span>
+								<a href="product/product_detail.htm" class="js-itemTitle">商品標題一</a>
+								<span>1 x <span class="js-itemPrice">$79.00</span></span>
 								<div class="clearfix"></div>
 							</li>
 						</ul>

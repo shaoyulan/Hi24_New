@@ -104,23 +104,43 @@ $(document).ready(function() {
 	$('#wrapper').on('click','.product-button',function(e){
 		e.preventDefault();
 		e.stopPropagation();
-		// fetch current number
+		// 空購物車顯示訊息
+		var cartInfo = $('js-cartInfo');
+		// 購物車目前商品數 Number of items in cart
+		var itemCount = $('.js-cartItem').length; //.length 是否會略過display:none的item
+		// 空的購物車HTML　Empty Cart HTML
+		var itemRow = $('#js-cartItem').clone();
+		// 購物車的最後一筆 Last item in cart
+		var lastItem = $('.js-cartItem:last');
+		// 購物車現有金額 fetch current Cart total
 		var currentP = parseInt($('.cart-btn a span').text().slice(1));
-		// selected-item price
-		var priceDis = $(e.target).parent().next().find('span:eq(1)').children().text().slice(1);
-		// if discount exists
+		// 被點擊的商品 Clicked Item Box
+		var itemBox = $(e.target).closest('.js-itemBox');
+		// 被選商品品名
+		var itemName = itemBox.find('h5').text();
+		// 被選商品ID
+		var itemId = itemBox.data('id');
+		// 折扣後金額 Discounted Price
+		var priceDis = itemBox.find('.js-disPrice').text().slice(1);
+
+
+		// 假如本商品有折扣 if discount exists
 		if(priceDis){
 			//use discount price
-			var price = parseInt(priceDis);
+			var price =priceDis;
 		}else{
 			// use org price
-			var price = parseInt($(e.target).parent().next().find('span:eq(1)').text().slice(1)); 
+			var price = itemBox.find('.product-price').text().slice(1); 
 			
 		}
+		
+		
 
-		//buy or cancel 
+		// 加入購物車/取消 buy or cancel 
 		var target = $(e.target).parent().next().find('section');
 		var itemNuber = parseInt($('#cart-amount').text());
+
+		// 被選的商品是要取消 或 加入
 		if(target.hasClass('buy')){
 			// renew total number
 			$('#cart-amount').text(--itemNuber);
@@ -129,17 +149,25 @@ $(document).ready(function() {
 		}else{
 			// renew total number
 			$('#cart-amount').text(++itemNuber);
-			// buy so price = price
-			var k;
+			// 購物車放入新的商品
+			itemRow.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide');
+			  // 修改標題
+			  itemRow.find('.js-itemTitle').text(itemName);
+			  // 修改金額
+			  itemRow.find('.js-itemPrice').text(price);
+			  // 加上ID
+			  itemRow.data('id',itemId);
 		}
 		
 
 		// set btn to red bgc
 		target.stop().toggleClass('buy');
 
-		// renew total price
-		var newPrice = price+currentP;
+		// 更新最新總價renew total price
+		var newPrice = parseInt(price)+currentP;
 		$('.cart-btn a span').text('$'+newPrice+'元');
 
 	});
 });
+
+// 購物車頁面加上大小選項

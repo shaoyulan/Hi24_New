@@ -8,8 +8,7 @@
 <meta charset="utf-8">
 <title>Hi24 嗨購網</title>
 
-
-<!-- Mobile Specific Metas 移動特定Metas
+<!-- Mobile Specific Metas
 ================================================== -->
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -17,6 +16,10 @@
 ================================================== -->
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/colors/green.css" id="colors">
+ 
+<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 
 </head>
 
@@ -104,23 +107,23 @@
 
 					<ul>
 						<li>
-							<a href="product_detail.htm"><img src="../images/small_product_list_08.jpg" alt="" /></a>
-							<a href="product_detail.htm">商品標題一</a>
+							<a href="../product/product_detail.htm"><img src="../images/small_product_list_08.jpg" alt="" /></a>
+							<a href="../product/product_detail.htm">商品標題一</a>
 							<span>1 x $79.00</span>
 							<div class="clearfix"></div>
 						</li>
 
 						<li>
-							<a href="product_detail.htm"><img src="../images/small_product_list_08.jpg" alt="" /></a>
-							<a href="product_detail.htm">商品標題二</a>
+							<a href="../product/product_detail.htm"><img src="../images/small_product_list_08.jpg" alt="" /></a>
+							<a href="../product/product_detail.htm">商品標題二</a>
 							<span>1 x $99.00</span>
 							<div class="clearfix"></div>
 						</li>
 					</ul>
 
 				<div class="cart-buttons button">
-					<a href="../shopping/cart_list_box.html" class="view-cart"><span data-hover="View Cart"><span>查看購物車</span></span></a>
-					<a href="../shopping/information.html" class="checkout"><span data-hover="Checkout">查看結算</span></a>
+					<a href="cart_list_box.html" class="view-cart"><span data-hover="View Cart"><span>查看購物車</span></span></a>
+					<a href="information.html" class="checkout"><span data-hover="Checkout">查看結算</span></a>
 				</div>
 				<div class="clearfix">
 
@@ -156,9 +159,9 @@
 				<li><a href="../index.html" class="current homepage" id="current">Home</a></li>
 
 				<li class="dropdown">
-					<a href="product.html">WOMEN</a>
+					<a href="../product/product.html">WOMEN</a>
 					<ul>
-						<li><a href="product_paging.html">上衣類</a></li>
+						<li><a href="../product/product_paging.html">上衣類</a></li>
 						<li><a href="#">襯衫類</a></li>
 						<li><a href="#">外套類</a></li>
 						<li><a href="#">針織衫</a></li>
@@ -170,9 +173,9 @@
 
 
 				<li class="dropdown">
-					<a href="product.html">MEN</a>
+					<a href="../product/product.html">MEN</a>
 					<ul>
-						<li><a href="product_paging.html">上衣類</a></li>
+						<li><a href="../product/product_paging.html">上衣類</a></li>
 						<li><a href="#">襯衫類</a></li>
 						<li><a href="#">外套類</a></li>
 						<li><a href="#">針織衫</a></li>
@@ -184,9 +187,9 @@
 
 
 				<li class="dropdown">
-					<a href="product.html">KIDS</a>
+					<a href="../product/product.html">KIDS</a>
 					<ul>
-						<li><a href="product_paging.html">上衣類</a></li>
+						<li><a href="../product/product_paging.html">上衣類</a></li>
 						<li><a href="#">襯衫類</a></li>
 						<li><a href="#">外套類</a></li>
 						<li><a href="#">針織衫</a></li>
@@ -197,273 +200,192 @@
 				</li>
 
 				<li class="dropdown">
-					<a href="product_sale.html">SALE</a></li>
+					<a href="../product/product_sale.html">SALE</a></li>
 
 			</ul>
 		</nav>
 	</div>
 </div>
-
 
 <!-- Titlebar
 ================================================== -->
-<section class="parallax-titlebar">
-  	  <img class="" src="../images/all_img/page_title01.jpg" alt="">
-   	<div class="parallax-content">
-		<h2>WOMEN <span>女裝</span></h2>
+<section class="titlebar">
+<div class="container">
+	<div class="sixteen columns">
+		<h2>購物車</h2>
+		
 		<nav id="breadcrumbs">
 			<ul>
-				<li><a href="#">HOME</a></li>
-				<li><a href="#">WOMEN</a></li>
+				<li><a href="../index.html">HOME</a></li>
+				<li><a href="cart_list_box.html">購物車</a></li>
+				<li><a href="checkout.html">購物填單</a></li>
+				<li>付款和訂單審核</li>
 			</ul>
 		</nav>
 	</div>
-
+</div>
 </section>
 
 
+<!-- Content
+================================================== -->
+
+<!-- Container -->
 <div class="container">
 
-	<!-- Content
-	================================================== -->
+	<div class="eight columns">
 
-	<div class="sixteen columns full-width">
+	<!-- Checkout Content -->
+    
+    <!--Checkout　1-->
+	<a href="checkout.html"><div class="checkout-section"><span>1</span> 送貨方式 <strong><i class="fa fa-edit"></i>編輯</strong> </div></a>
+		<div class="checkout-delivery">
 
-		<!-- Ordering -->
-		<select class="orderby">
-            <option>全部</option>
-			<option>襯衫類</option>
-			<option>外套類</option>
-			<option>針織衫</option>
-            <option>褲&裙裝</option>
-			<option>家居&內著</option>
-			<option>配件</option>
-		</select>
+			<div class="eight columns alpha omega">
+				<ul class="address-review delivery">
+					<li><strong>貨運寄送付款 <span class="delivery-summary">$60 <span class="sep">|</span> 交貨時間為1至2個工作日</span></strong></li>
+				</ul>
+			</div>
+			<div class="clearfix"></div>
 
+		</div>
+    
+    <!--Checkout　2-->
+	<a href="checkout-delivery.html"><div class="checkout-section"><span>2</span> 結算明細與寄送 <strong><i class="fa fa-edit"></i>編輯</strong> </div></a>
+	<div class="checkout-content">
+	
+	<div class="four columns alpha">
+		<ul class="address-review">
+			<li><strong>帳單地址</strong></li>
+            <li>台灣</li>
+			<li>台中市西屯區工業一路100號</li>			
+			<li>王小惠</li>
+            <li>0919-123456</li>
+		</ul>
 	</div>
-
-	<!-- Products -->
-	<div class="products">
-
-		<!-- Product #1 -->
-		<div class="four columns">
-			<figure class="product">
-							<div class="mediaholder">
-								<a href="product_detail.html">
-									<img alt="" src="../images/women/accessories/a001a-2.jpg"/>
-									<div class="cover">
-										<img alt="" src="../images/women/accessories/a001a-1.jpg"/>
-									</div>
-								</a>
-								<a href="#" class="product-button"><i class="fa fa-shopping-cart"></i> 加入購物車</a>
-							</div>
-
-							<a href="product_detail.html">
-								<section>
-									<span class="product-category">配件</span>
-									<h5>棉質條紋寬領長袖T恤-女</h5>
-									<span class="product-price">$379.00</span>
-								</section>
-							</a>
-						</figure>
-		</div>
-
-
-		<!-- Product #2 -->
-		<div class="four columns">
-			<figure class="product">
-							<div class="mediaholder">
-								<a href="product_detail.html">
-									<img alt="" src="../images/women/accessories/a002a-2.jpg"/>
-									<div class="cover">
-										<img alt="" src="../images/women/accessories/a002a-1.jpg"/>
-									</div>
-								</a>
-								<a href="#" class="product-button"><i class="fa fa-shopping-cart"></i> 加入購物車</a>
-							</div>
-
-							<a href="product_detail.html">
-								<section>
-									<span class="product-category">配件</span>
-									<h5>棉質條紋寬領長袖T恤-女</h5>
-									<span class="product-price">$379.00</span>
-								</section>
-							</a>
-						</figure>
-		</div>
-
-
-		<!-- Product #3 -->
-		<div class="four columns">
-			<figure class="product">
-							<div class="product-discount">SALE</div>
-							<div class="mediaholder">
-								<a href="product_detail.html">
-									<img alt="" src="../images/women/accessories/a003a-2.jpg"/>
-									<div class="cover">
-										<img alt="" src="../images/women/accessories/a003a-1.jpg"/>
-									</div>
-								</a>
-								<a href="#" class="product-button"><i class="fa fa-shopping-cart"></i> 加入購物車</a>
-							</div>
-
-							<a href="product_detail.html">
-								<section>
-									<span class="product-category">配件</span>
-									<h5>棉質條紋寬領長袖T恤-女</h5>
-                                    <span class="product-price-discount">$499.00<i>$399.00</i></span>
-								</section>
-							</a>
-						</figure>
-		</div>
-
-
-		<!-- Product #4 -->
-		<div class="four columns">
-			<figure class="product">
-                            <div class="product-discount">SALE</div>
-							<div class="mediaholder">
-								<a href="product_detail.html">
-									<img alt="" src="../images/women/coat/ct001a-2.jpg"/>
-									<div class="cover">
-										<img alt="" src="../images/women/coat/ct001a-1.jpg"/>
-									</div>
-								</a>
-								<a href="#" class="product-button"><i class="fa fa-shopping-cart"></i> 加入購物車</a>
-							</div>
-
-							<a href="product_detail.html">
-								<section>
-									<span class="product-category">外套</span>
-									<h5>棉質條紋寬領長袖T恤-女</h5>
-									<span class="product-price-discount">$1299.00<i>$999.00</i></span>
-								</section>
-							</a>
-						</figure>
-		</div>
-
-
-		<!-- Product #5 -->
-		<div class="four columns">
-			<figure class="product">
-				<div class="mediaholder">
-					<a href="product_detail.html">
-						<img alt="" src="../images/women/coat/ct002a-2.jpg"/>
-						<div class="cover">
-						<img alt="" src="../images/women/coat/ct002a-1.jpg"/>
-						</div>
-					</a>
-					<a href="#" class="product-button"><i class="fa fa-shopping-cart"></i> 加入購物車</a>
-				</div>
-
-				<a href="product_detail.html">
-					<section>
-						<span class="product-category">外套</span>
-						<h5>棉質條紋寬領長袖T恤-女</h5>
-						<span class="product-price">$999.00</span>
-					</section>
-				</a>
-			</figure>
-		</div>
-
-
-		<!-- Product #6 -->
-		<div class="four columns">
-			<figure class="product">
-                 <div class="product-discount">SALE</div>
-				<div class="mediaholder">
-					<a href="product_detail.html">
-						<img alt="" src="../images/women/coat/ct003a-2.jpg"/>
-						<div class="cover">
-						<img alt="" src="../images/women/coat/ct003a-1.jpg"/>
-						</div>
-					</a>
-					<a href="#" class="product-button"><i class="fa fa-shopping-cart"></i> 加入購物車</a>
-				</div>
-
-				<a href="product_detail.html">
-					<section>
-						<span class="product-category">外套</span>
-						<h5>棉質條紋寬領長袖T恤-女</h5>
-						<span class="product-price-discount">$1299.00<i>$999.00</i></span>
-					</section>
-				</a>
-			</figure>
-		</div>
-
-
-		<!-- Product #7 -->
-		<div class="four columns">
-			<figure class="product">
-				<div class="mediaholder">
-					<a href="product_detail.html">
-						<img alt="" src="../images/women/coat/ct004a-2.jpg"/>
-						<div class="cover">
-						<img alt="" src="../images/women/coat/ct004a-1.jpg"/>
-						</div>
-					</a>
-					<a href="#" class="product-button"><i class="fa fa-shopping-cart"></i> 加入購物車</a>
-				</div>
-
-				<a href="product_detail.html">
-					<section>
-						<span class="product-category">外套</span>
-						<h5>棉質條紋寬領長袖T恤-女</h5>
-						<span class="product-price">$999.00</span>
-					</section>
-				</a>
-			</figure>
-		</div>
-
-
-		<!-- Product #8 -->
-		<div class="four columns">
-			<figure class="product">
-				<div class="mediaholder">
-					<a href="product_detail.html">
-						<img alt="" src="../images/women/coat/ct001a-2.jpg"/>
-						<div class="cover">
-						<img alt="" src="../images/women/coat/ct001a-1.jpg"/>
-						</div>
-					</a>
-					<a href="#" class="product-button"><i class="fa fa-shopping-cart"></i> 加入購物車</a>
-				</div>
-
-				<a href="product_detail.html">
-					<section>
-						<span class="product-category">外套</span>
-						<h5>棉質條紋寬領長袖T恤-女</h5>
-						<span class="product-price">$999.00</span>
-					</section>
-				</a>
-			</figure>
-		</div>
+	<div class="four columns alpha omega">
+		<ul class="address-review">
+			<li><strong>收件地址</strong></li>
+			<li>與付款地址相同款　(貨運寄送時顯示)</li>
+            <li>超商取貨付款　(勾選超商取貨付款時顯示)</li>
+		</ul>
+	</div>
+	<div class="clearfix"></div>
+	</div>    
+        
+        
 		<div class="clearfix"></div>
+        
+        <!--Checkout　3-->
+			<div class="checkout-section active"><span>3</span> 付款和訂單審核</div>
+			<div class="checkout-summary">
+				<div class="eight columns alpha omega">
+					<ul class="address-review summary">
+						<li><strong>信用卡</strong></li>
+						<li>
+							<ul class="payment-icons checkout">
+								<li><img src="../images/visa.png" alt="" /></li>
+								<li><img src="../images/mastercard.png" alt="" /></li>
+								<li><img src="../images/skrill.png" alt="" /></li>
+								<li><img src="../images/moneybookers.png" alt="" /></li>
+								<li><img src="../images/paypal.png" alt="" /></li>
+							</ul>
+							<div class="clearfix"></div>
+						</li>
+						<li class="credit-card-fields">
+							<span><label>信用卡號:</label><input type="text" value="" /></span>
 
+							<span><label>月:</label>
+							<select>
+								<option value="">01</option>
+								<option value="">02</option>
+								<option value="">03</option>
+								<option value="">04</option>
+								<option value="">05</option>
+								<option value="">06</option>
+								<option value="">07</option>
+								<option value="">08</option>
+								<option value="">09</option>
+								<option value="">10</option>
+								<option value="">11</option>
+								<option value="">12</option>
+							</select></span>
+							
+							<span><label>年:</label>
+							<select>
+								<option value="">2014</option>
+								<option value="">2015</option>
+								<option value="">2016</option>
+								<option value="">2017</option>
+								<option value="">2018</option>
+							</select></span>
+							<div class="clearfix"></div>
+						</li>
+					</ul>
+				</div>
+			</div>
+	
+			<a href="../member/OrderDetail.html" class="continue button color">確認下訂單</a>
 
-		<!-- Pagination -->
-		<div class="pagination-container">
-			<nav class="pagination">
-				<ul>
-					<li><a href="#" class="current-page">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-				</ul>
-			</nav>
-
-			<nav class="pagination-next-prev full-width">
-				<ul>
-					<li><a href="#" class="prev"></a></li>
-					<li><a href="#" class="next"></a></li>
-				</ul>
-			</nav>
 		</div>
+		<!-- Checkout Content / End -->	
 
+	
+	<!-- Checkout Cart -->
+	<div class="eight columns">
+		<div class="checkout-section cart">購物車</div>
+		<!-- Cart -->
+		<table class="checkout cart-table responsive-table">
+
+			<tr>
+				<th class="hide-on-mobile"></th>
+				<th></th>
+				<th>單價</th>
+				<th>數量</th>
+				<th>合計</th>
+			</tr>
+					
+			<!-- Item #1 -->
+			<tr>
+				<td class="hide-on-mobile"><img src="../images/small_product_list_08.jpg" alt=""/></td>
+				<td class="cart-title"><a href="#">37621031 毛圈休閒長褲-男</a></td>
+				<td>$779</td>
+				<td class="qty-checkout">1</td>
+				<td class="cart-total">$579</td>
+			</tr>
+
+			<!-- Item #2 -->
+			<tr>
+				<td class="hide-on-mobile"><img src="../images/small_product_list_09.jpg" alt=""/></td>
+				<td class="cart-title"><a href="#"><strong>37621031 毛圈休閒長褲-男</strong></a></td>
+				<td>$999</td>
+				<td class="qty-checkout">1</td>
+				<td class="cart-total">$899</td>
+			</tr>
+
+			</table>
+
+			<!-- Apply Coupon Code / Buttons -->
+			<table class="cart-table bottom">
+
+				<tr>
+				<th class="checkout-totals">
+					<div class="checkout-subtotal">
+						小計：<span class="color1">$1,478</span>
+					</div>
+				</th>
+				</tr>
+
+			</table>
 	</div>
+	<!-- Checkout Cart / End -->
+
 
 </div>
+<!-- Container / End -->
 
-<div class="margin-top-15"></div>
+<div class="margin-top-30"></div>
+
 
 <!-- Footer
 ================================================== -->
@@ -547,8 +469,8 @@
 		<div class="eight columns">© Copyright 2018 by <a href="#">Hi24</a>. All Rights Reserved.</div>
 		<div class="eight columns">
 			<nav class="footer-nav">
-			<a href="page/about.html">聯絡我們</a>
-			<a href="news/news.html">最新訊息</a>
+			<a href="../product/page/about.html">聯絡我們</a>
+			<a href="../product/news/news.html">最新訊息</a>
 		    </nav>
 		</div>
 
