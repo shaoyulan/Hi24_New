@@ -1,5 +1,7 @@
 $(document).ready(function() {
-	//首頁初始化
+	// 建立購物車陣列
+	cart = [];
+	// 首頁初始化
 	index_setup();
 
 	//建立模板產生、放置器 fill template function
@@ -127,8 +129,6 @@ $(document).ready(function() {
 			Call_AJAX_place_data({id:productId,mode:'get_defPhotos'},'.js-defPhotos-putHere','#product_defPhotos_tmp');
 			// 載入替換的四張照片、設定對應色塊
 			$.post('../crud/dataFiltered.php',{id:productId,mode:'get_mainPhotos'},function(data,t,x){
-				console.log(productId);
-				console.log(data);
 				var target = $('.rsContainer .rsSlide');
 				target.each(function(i,k){
 					$(this).attr({'src':data[i].main_photo_substitute,'data-rsTmb':data[i].color})
@@ -158,68 +158,29 @@ $(document).ready(function() {
 		return Cat;
 	}
 
-	//預先定義  載入Prodcut_detail 後 稍後要執行的fuction
-	function prodcut_detail_func($vars){
+
+	// 購物車頁面
+	function cart_list_box(e){
+		if(e){
+			e.preventDefault();
+			e.stopPropagation();
+		}
 		
-		// 將第一張設為active
-		$('.colorBox:first').addClass('active');
-		
-		// 載入右邊區塊
-		  // 將title	改為第一件的
-		  var title = $('.colorBox:first').data('title');
-		  $('.js-title').text(title);
-
-
-		  // 設定第一件衣服Size avalible status (現有庫存)
-		  $.post('../crud/dataFiltered.php', {title:title,productId:productId,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
-		  		 // 訂定Size狀態
-		  		 $.each(data,function(key,value){
-		  		 	size = value["size"];
-		  		 	// :contains only accept text
-		  		 	$(".product_detail .p_size:contains('"+size+"')").addClass('avalible');
-		  		 });
-		  		 // 設定第一個為預設
-		  		 $(".product_detail .p_size:eq(0)").addClass('active');
-		  });
-		  
-     	   // 將商品編號改為第一件的
-		   var size = $('.p_size:eq(0)').text();
-		   var id = get_item_id(title,size,change_id)
-
-		  // 依第一件item id 修改size 區塊 
-	} 
-
-	//預先定義  載入Prodcut_detail 後 稍後要執行的fuction
-	function prodcut_detail_func($vars){
-		
-		// 將第一張設為active
-		$('.product_detail .p_color').find('a:eq(0) img').addClass('active');
-		
-		// 載入右邊區塊
-		  // 將title	改為第一件的
-		  var title = $('.product_detail .p_color').find('a:eq(0)').data('title');
-		  $('#icolor').text(title);
-
-
-		  // 設定衣服Size avalible status (現有庫存)
-		  $.post('../crud/dataFiltered.php', {title:title,mode:"product_item_detail_size"}, function(data, textStatus, xhr) {
-		  		 // 訂定Size狀態
-		  		 $.each(data,function(key,value){
-		  		 	size = value["size"];
-		  		 	// :contains only accept text
-		  		 	$(".product_detail .p_size:contains('"+size+"')").addClass('avalible');
-		  		 });
-		  		 // 設定第一個為預設
-		  		 $(".product_detail .p_size:eq(0)").addClass('active');
-		  });
-		  
-     	   // 將商品編號改為第一件的
-		   // var size = $('.p_size:eq(0)').text();
-		   // var id = get_item_id(title,size,change_id)
-
-		  // 依第一件item id 修改size 區塊 
-	} 
-
+		Page_loader(e,"../shopping/cart_list_box.php",function(e){
+			// 取得購物清單(:not 範本)
+			$.each(cart,function(key,item){
+				// 貨幣格式化
+				var total = new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2 }).format(item.total);
+				var cartRow = $('.js-cartRowTmp').clone().removeAttr('id').insertAfter('#js-cartRowTmp');
+				// 更新資料
+				cartRow.find('.name').text(item.itemName)
+					   .end()
+					   .find('.price').text('$'+item.price)
+					   .end()
+					   .find('.cart-total').text('$'+total);
+			});
+		});
+	}
 	// InterFace UI/UX
 		function scrollTop(){
 			$('body').animate({'scrollTop':0},600);
@@ -309,9 +270,24 @@ $(document).ready(function() {
 				// 修改標題
 				.find('.js-itemTitle').text(itemName)
 			  	// 修改金額
+			  	.end()
 			  	.find('.js-itemPrice').text(price)
 			  	// 加上productid、detailid
-				.attr({'productid':productid,'detailid':detailid});
+			  	.end() 
+			  	//data-no 用於對應cart 陣列排序
+				.attr({'data-productid':productid,'data-detailid':detailid,'data-no':(itemCount-1)});
+
+				var size = size || '', qty =qty || 1, total = price*qty;
+				// 更新購物車陣列
+				cart.push({
+					productid:productid,
+					detailid:detailid,
+					itemName:itemName,
+					price:price,
+					size:size,
+					qty:qty,
+					total:total
+				});
 		}
 		
 
@@ -336,6 +312,12 @@ $(document).ready(function() {
 	// 商品詳細頁點擊載入 - -- ALL
 	$('body').on('click','a[href="product/product_detail.html"]',function(e){
 		product_detail(e,this);
+	});
+
+
+	// 進入購物車
+	$('body').on('click','a[href="shopping/cart_list_box.html"]',function(e){
+		cart_list_box(e);
 	});
 });
 
