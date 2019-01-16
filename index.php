@@ -181,209 +181,212 @@
 		<div> <!-- Pages holder -->
 
 		</div> 
+		
+		<div class="index">
 			
-		<div class="index container fullwidth-element home-slider">
+			<div class="container fullwidth-element home-slider">
 
-			<div class="tp-banner-container">
-				<div class="tp-banner">
-					<ul id="headerAdContainer">
-						<!-- Header-Ad goes here -->
-					</ul>
-				</div>
-			</div>
-		</div>
-
-
-		<!-- Featured (主選單商品分類)廣告
-		================================================== -->
-		<div class="container" >
-
-			<div class="one-third column">
-				<a href="product/product.html" class="img-caption" >
-					<figure>
-						<img src="images/in_img/b2_01.jpg" alt="" />
-						<figcaption>
-							<h3>WOMEN Shirts</h3>
-							<span>25% Off Autumn And Winter</span>
-						</figcaption>
-					</figure>
-				</a>
-			</div>
-
-			<div class="one-third column">
-				<a href="product/product.html" class="img-caption" >
-					<figure>
-						<img src="images/in_img/b2_02.jpg" alt="" />
-						<figcaption>
-							<h3>MEN Jacket</h3>
-							<span>Winter Jacket Season Sales</span>
-						</figcaption>
-					</figure>
-				</a>
-			</div>
-
-			<div class="one-third column">
-				<a href="product/product.html" class="img-caption" >
-					<figure>
-						<img src="images/in_img/b2_03.jpg" alt="" />
-						<figcaption>
-							<h3>KIDS Pants & dresses</h3>
-							<span>Winter Discount</span>
-						</figcaption>
-					</figure>
-				</a>
-			</div>	
-
-			<div class="one-third column">
-				<a href="#" class="img-caption" >
-					<figure>
-						<img src="images/in_img/b3_01.jpg" alt="" />
-					</figure>
-				</a>
-			</div>
-
-			<div class="one-third column">
-				<a href="#" class="img-caption" >
-					<figure>
-						<img src="images/in_img/b3_02.jpg" alt="" />
-					</figure>
-				</a>
-			</div>
-
-			<div class="one-third column">
-				<a href="#" class="img-caption" >
-					<figure>
-						<img src="images/in_img/b3_03.jpg" alt="" />
-					</figure>
-				</a>
-			</div>
-
-		</div>
-		<div class="clearfix"></div>
-
-
-		<!-- New Arrivals 新品上架或最新活動
-		================================================== -->
-		<div class="container">
-
-			<!-- Headline -->
-			<div class="sixteen columns">
-				<h3 class="headline">New Arrivals</h3>
-				<span class="line margin-bottom-0"></span>
-			</div>
-
-			<!-- Carousel -->
-			<div id="new-arrivals" class="showbiz-container sixteen columns" >
-
-				<!-- Navigation -->
-				<div class="showbiz-navigation">
-					<div id="showbiz_left_1" class="sb-navigation-left"><i class="fa fa-angle-left"></i></div>
-					<div id="showbiz_right_1" class="sb-navigation-right"><i class="fa fa-angle-right"></i></div>
-				</div>
-				<div class="clearfix"></div>
-
-				<!-- Products -->
-				<div class="showbiz" data-left="#showbiz_left_1" data-right="#showbiz_right_1" data-play="#showbiz_play_1" >
-					<div class="overflowholder">
-
-						<ul id="productList">
-							<!-- product goes here -->
+				<div class="tp-banner-container">
+					<div class="tp-banner">
+						<ul id="headerAdContainer">
+							<!-- Header-Ad goes here -->
 						</ul>
-						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
 
+
+			<!-- Featured (主選單商品分類)廣告
+			================================================== -->
+			<div class="container" >
+
+				<div class="one-third column">
+					<a href="product/product.html" class="img-caption" >
+						<figure>
+							<img src="images/in_img/b2_01.jpg" alt="" />
+							<figcaption>
+								<h3>WOMEN Shirts</h3>
+								<span>25% Off Autumn And Winter</span>
+							</figcaption>
+						</figure>
+					</a>
+				</div>
+
+				<div class="one-third column">
+					<a href="product/product.html" class="img-caption" >
+						<figure>
+							<img src="images/in_img/b2_02.jpg" alt="" />
+							<figcaption>
+								<h3>MEN Jacket</h3>
+								<span>Winter Jacket Season Sales</span>
+							</figcaption>
+						</figure>
+					</a>
+				</div>
+
+				<div class="one-third column">
+					<a href="product/product.html" class="img-caption" >
+						<figure>
+							<img src="images/in_img/b2_03.jpg" alt="" />
+							<figcaption>
+								<h3>KIDS Pants & dresses</h3>
+								<span>Winter Discount</span>
+							</figcaption>
+						</figure>
+					</a>
+				</div>	
+
+				<div class="one-third column">
+					<a href="#" class="img-caption" >
+						<figure>
+							<img src="images/in_img/b3_01.jpg" alt="" />
+						</figure>
+					</a>
+				</div>
+
+				<div class="one-third column">
+					<a href="#" class="img-caption" >
+						<figure>
+							<img src="images/in_img/b3_02.jpg" alt="" />
+						</figure>
+					</a>
+				</div>
+
+				<div class="one-third column">
+					<a href="#" class="img-caption" >
+						<figure>
+							<img src="images/in_img/b3_03.jpg" alt="" />
+						</figure>
+					</a>
+				</div>
+
+			</div>
+			<div class="clearfix"></div>
+
+
+			<!-- New Arrivals 新品上架或最新活動
+			================================================== -->
+			<div class="container">
+
+				<!-- Headline -->
+				<div class="sixteen columns">
+					<h3 class="headline">New Arrivals</h3>
+					<span class="line margin-bottom-0"></span>
+				</div>
+
+				<!-- Carousel -->
+				<div id="new-arrivals" class="showbiz-container sixteen columns" >
+
+					<!-- Navigation -->
+					<div class="showbiz-navigation">
+						<div id="showbiz_left_1" class="sb-navigation-left"><i class="fa fa-angle-left"></i></div>
+						<div id="showbiz_right_1" class="sb-navigation-right"><i class="fa fa-angle-right"></i></div>
 					</div>
 					<div class="clearfix"></div>
+
+					<!-- Products -->
+					<div class="showbiz" data-left="#showbiz_left_1" data-right="#showbiz_right_1" data-play="#showbiz_play_1" >
+						<div class="overflowholder">
+
+							<ul id="productList">
+								<!-- product goes here -->
+							</ul>
+							<div class="clearfix"></div>
+
+						</div>
+						<div class="clearfix"></div>
+					</div>
 				</div>
+
 			</div>
 
-		</div>
+
+			<!-- Parallax Banner
+			================================================== -->
+			<div class="parallax-banner fullwidth-element"  data-background="#000" data-opacity="0.45" data-height="200">
+				<img src="images/in_img/b4_02.jpg" alt="" />
+				<div class="parallax-overlay"></div>
+				<div class="parallax-title">End of season sale <span>Up to 35% off Women’s Denim</span></div>
+			</div>
 
 
-		<!-- Parallax Banner
-		================================================== -->
-		<div class="parallax-banner fullwidth-element"  data-background="#000" data-opacity="0.45" data-height="200">
-			<img src="images/in_img/b4_02.jpg" alt="" />
-			<div class="parallax-overlay"></div>
-			<div class="parallax-title">End of season sale <span>Up to 35% off Women’s Denim</span></div>
-		</div>
+			<!-- Product Lists
+			================================================== -->
+			<div class="container margin-bottom-25">
+
+				<!-- Best Sellers -->
+				<div class="one-third column">
+
+					<!-- Headline -->
+					<h3 class="headline">WOMEN</h3>
+					<span class="line margin-bottom-0"></span>
+					<div class="clearfix"></div>
 
 
-		<!-- Product Lists
-		================================================== -->
-		<div class="container margin-bottom-25">
+					<ul class="product-list" id="product-list-categoried1">
+						<!-- product-list-categoried goes here -->
+						<li><div class="clearfix"></div></li>
+					</ul>
 
-			<!-- Best Sellers -->
-			<div class="one-third column">
+				</div>
+
+
+				<!-- Top Rated -->
+				<div class="one-third column">
+
+					<!-- Headline -->
+					<h3 class="headline">MEN</h3>
+					<span class="line margin-bottom-0"></span>
+					<div class="clearfix"></div>
+
+
+					<ul class="product-list top-rated" id="product-list-categoried2">
+						<!-- product-list-categoried goes here -->
+						<li><div class="clearfix"></div></li>
+					</ul>
+
+				</div>
+
+
+				<!-- Weekly Sales -->
+				<div class="one-third column">
+
+					<!-- Headline -->
+					<h3 class="headline">KIDS</h3>
+					<span class="line margin-bottom-0"></span>
+					<div class="clearfix"></div>
+
+
+					<ul class="product-list discount" id="product-list-categoried3">
+						<!-- product-list-categoried goes here -->
+						<li><div class="clearfix"></div></li>
+					</ul>
+
+				</div>
+
+			</div>
+			<div class="clearfix"></div>
+
+
+			<!-- Latest Articles  最新訊息
+			================================================== -->
+			<div class="container" >
 
 				<!-- Headline -->
-				<h3 class="headline">WOMEN</h3>
-				<span class="line margin-bottom-0"></span>
-				<div class="clearfix"></div>
+				<div class="sixteen columns" >
+					<h3 class="headline">最新訊息</h3>
+					<span class="line margin-bottom-30"></span>
+				</div>
 
-
-				<ul class="product-list" id="product-list-categoried1">
-					<!-- product-list-categoried goes here -->
-					<li><div class="clearfix"></div></li>
-				</ul>
-
-			</div>
-
-
-			<!-- Top Rated -->
-			<div class="one-third column">
-
-				<!-- Headline -->
-				<h3 class="headline">MEN</h3>
-				<span class="line margin-bottom-0"></span>
-				<div class="clearfix"></div>
-
-
-				<ul class="product-list top-rated" id="product-list-categoried2">
-					<!-- product-list-categoried goes here -->
-					<li><div class="clearfix"></div></li>
-				</ul>
+				<div id="newsWraper">
+					<!-- news goes here -->
+				</div>
 
 			</div>
 
-
-			<!-- Weekly Sales -->
-			<div class="one-third column">
-
-				<!-- Headline -->
-				<h3 class="headline">KIDS</h3>
-				<span class="line margin-bottom-0"></span>
-				<div class="clearfix"></div>
-
-
-				<ul class="product-list discount" id="product-list-categoried3">
-					<!-- product-list-categoried goes here -->
-					<li><div class="clearfix"></div></li>
-				</ul>
-
-			</div>
-
+			<div class="margin-top-50"></div>
 		</div>
-		<div class="clearfix"></div>
-
-
-		<!-- Latest Articles  最新訊息
-		================================================== -->
-		<div class="container" >
-
-			<!-- Headline -->
-			<div class="sixteen columns" >
-				<h3 class="headline">最新訊息</h3>
-				<span class="line margin-bottom-30"></span>
-			</div>
-
-			<div id="newsWraper">
-				<!-- news goes here -->
-			</div>
-
-		</div>
-
-		<div class="margin-top-50"></div>
 	</div>
-</div>
+		</div>	
 
 <?php include('footer.php')?>

@@ -107,8 +107,9 @@ $(document).ready(function() {
 					mainCat = itemBox.data('maincat'),
 					price_org = itemBox.find('product-price').text(),
 					price_dis = itemBox.find('.js-disPrice').text(),
-					productId = itemBox.data('.productid'),
-					detailId = itemBox.data('.detailid');
+					productId = itemBox.data('productid'),
+					detailId = itemBox.data('detailid');
+
 			}
 		}// e若不存在 使代表要用全域變數
 		
@@ -117,16 +118,26 @@ $(document).ready(function() {
 			// Do after_load
 			// Chane Breadcrumbs 
 			//**************IMPORTANT : Propagation !!******************
-			$('.title').data('productid').text(productId);
+			$('.title').data('productid',productId);
 			$('.js-maincat-ch').text(Category_translate(mainCat));
 			$('.js-maincat-en').text(mainCat);  
 			$('.price-org').text(price_org);
 			$('.price-dis').text(price_dis);
-			Call_AJAX_place_data({id:id,mode:'get_defPhotos'},'.js-defPhotos-putHere','#product_defPhotos_tmp');
-
+			// 載入下方四張大圖
+			Call_AJAX_place_data({id:productId,mode:'get_defPhotos'},'.js-defPhotos-putHere','#product_defPhotos_tmp');
 			// 載入替換的四張照片、設定對應色塊
-			Call_AJAX_place_data({id:id,mode:'get_mainPhotos'},'.js-mainPhotos-putHere','#product_mainPhotos_tmp',prodcut_detail_func);
-			
+			$.post('../crud/dataFiltered.php',{id:productId,mode:'get_mainPhotos'},function(data,t,x){
+				console.log(productId);
+				console.log(data);
+				var target = $('.rsContainer .rsSlide');
+				target.each(function(i,k){
+					$(this).attr({'src':data[i].main_photo_substitute,'data-rsTmb':data[i].color})
+				});
+			});
+
+			// 預設選擇第一個
+			$('.color-buttons li a:first').css('border','1px solid');
+
 		},$push);
 	}
 
@@ -203,8 +214,8 @@ $(document).ready(function() {
 		  });
 		  
      	   // 將商品編號改為第一件的
-		   var size = $('.p_size:eq(0)').text();
-		   var id = get_item_id(title,size,change_id)
+		   // var size = $('.p_size:eq(0)').text();
+		   // var id = get_item_id(title,size,change_id)
 
 		  // 依第一件item id 修改size 區塊 
 	} 
@@ -217,7 +228,7 @@ $(document).ready(function() {
 		$('#backtotop').click(function(e){
 			scrollTop();		
 		})
-
+/*
 	$(window).on('popstate',function(e){
 		var func = location.pathname;
 
@@ -241,7 +252,7 @@ $(document).ready(function() {
 
 		eval(func);
 	});
-
+*/
 	// Cart number counter
 	$('#wrapper').on('click','.product-button',function(e){
 		e.preventDefault();

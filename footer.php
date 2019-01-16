@@ -185,7 +185,7 @@
 <!-- Handlebars template -->
 <script src="scripts/handlebars-v4.0.12.js"></script>
 <!-- website main js -->
-<script src="js/main.js"></script>
+
 <script src="scripts/jquery.jpanelmenu.js"></script>
 <script src="scripts/jquery.themepunch.plugins.min.js"></script>
 <script src="scripts/jquery.themepunch.revolution.min.js"></script>
@@ -207,4 +207,4 @@
 <script src="scripts/puregrid.js"></script>
 <script src="scripts/stacktable.js"></script>
 <script src="scripts/custom.js"></script>
-
+<script src="js/main.js"></script>

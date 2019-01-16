@@ -1,7 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- CSS
+================================================== -->
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/colors/green.css" id="colors">
+
+<script type="text/javascript">
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+</script>
+</head>
+
+<body class="boxed">
+<div id="wrapper">
 <!-- Titlebar 標題
 ================================================== -->
 <section class="parallax-titlebar">
-    <img class="" src="../images/all_img/page_title01.jpg" alt="">
+    <img class="" src="images/all_img/page_title01.jpg" alt="">
 	<div class="parallax-content">    
 		<h2>WOMEN <span class="js-maincat-ch">女裝</span></h2>
 		<nav id="breadcrumbs">
@@ -23,6 +59,14 @@
 		<div class="slider-padding">
 			<div id="product-slider" class="js-mainPhotos-putHere royalSlider rsDefault">
 				<!-- js-mainPhotos-putHere -->
+			    <img class="rsImg" src="../images/women/sweater/sw001a.jpg" data-rsTmb="../images/women/sweater/sw001a.jpg" alt="" id="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001b.jpg" data-rsTmb="../images/women/sweater/sw001b.jpg" alt="" d="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001c.jpg" data-rsTmb="../images/women/sweater/sw001c.jpg" alt="" d="photo">
+                 <img class="rsImg" src="../images/women/sweater/sw001d.jpg" data-rsTmb="../images/women/sweater/sw001d.jpg" alt="" d="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001a-1.jpg" data-rsTmb="../images/women/sweater/sw001a-1.jpg" alt="" d="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001a-2.jpg" data-rsTmb="../images/women/sweater/sw001a-2.jpg" alt="" d="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001a-3.jpg" data-rsTmb="../images/women/sweater/sw001a-3.jpg" alt="" d="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001a-4.jpg" data-rsTmb="../images/women/sweater/sw001a-4.jpg" alt="" d="photo">
 			 </div>
 			 <div class="clearfix"></div>
 		</div>
@@ -35,7 +79,7 @@
 		<div class="product-page">
 			
 			<!-- Headline -->
-			<section class="title data-productid=''">
+			<section class="title" data-productid=''>
 				<h2>棉質編織圓領毛衣-女（ <span class="js-title">麻花卡其 -S</span>）</h2>
                 <p>商品編號：37447011</p>
                 
@@ -45,7 +89,7 @@
                 <div class="product-discount-detail">
 				<span class="product-price-discount"><span class="price-org">$599</span> <i><b>$</b class="price-dis">399</i></span>
                 <span  class="product-activity"><a href="#">冬日煥新．限時搶購</a></span>
-                </div>      
+                </div>       
 			</section>
             
             <div class="clearfix"></div>
@@ -57,10 +101,10 @@
 				<div class="color-buttons">                
                 <h4>Color</h4>
 					<ul>
-						<li><a href="#"><img src="../images/women/sweater/sw001ai-1.jpg"  alt="" onMouseOver="MM_swapImage('photo','','../images/women/sweater/sw001a.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
-						<li><a href="#"><img src="../images/women/sweater/sw001ai-2.jpg"  alt="" onMouseOver="MM_swapImage('photo','','../images/women/sweater/sw001b.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
-						<li><a href="#"><img src="../images/women/sweater/sw001ai-3.jpg"  alt="" onMouseOver="MM_swapImage('photo','','../images/women/sweater/sw001c.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
-                        <li><a href="#"><img src="../images/women/sweater/sw001ai-4.jpg"  alt="" onMouseOver="MM_swapImage('photo','','../images/women/sweater/sw001d.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
+						<li><a href="#"><img src="images/women/sweater/sw001ai-1.jpg"  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001a.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
+						<li><a href="#"><img src="images/women/sweater/sw001ai-2.jpg"  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001b.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
+						<li><a href="#"><img src="images/women/sweater/sw001ai-3.jpg"  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001c.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
+                        <li><a href="#"><img src="images/women/sweater/sw001ai-4.jpg"  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001d.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
 					</ul>
 				</div>
 				<div class="clearfix"></div>                
@@ -384,3 +428,19 @@
 </div>
 
 <div class="margin-top-15"></div>
+
+
+<!-- Back To Top Button -->
+<div id="backtotop"><a href="#"></a></div>
+
+
+
+<!-- javascript -->
+<!-- 商品頁產品說明商品規格尺寸表 因html後到，故沒吃到index js -->
+<!-- pending : 改成自己寫  -->
+<script src="scripts/custom.js"></script> 
+<script src="../scripts/jquery.royalslider.min.js"></script>
+
+
+</body>
+</html>

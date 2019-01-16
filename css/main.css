@@ -6,3 +6,8 @@
 #cart .js-cartInfo.hide,#cart #js-cartItem.hide{
 	display: none;
 }
+
+/*detail page*/
+.selectListOuterWrap .selectListInnerWrap .selectListTop {
+	color:red!important;
+}

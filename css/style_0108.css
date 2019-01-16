@@ -912,7 +912,7 @@ span.skill-title i {
 }
 
 
-/* Cart TOP上方購物車列表
+/* Cart
 ------------------------------------- */
 #cart {
 	float: right;
@@ -2088,7 +2088,6 @@ a.button.color:hover { background-color: #c0c0c0; }
 	display: none;
 	bottom: 20px;
 	margin: 0 20px 0 0;
-	z-index: 900;
 }
 
 #backtotop a {
@@ -6033,7 +6032,6 @@ table.cart-table.bottom th { padding: 15px; }
 .eight.columns.cart-totals {
 	float: right;
 	margin: 45px 0 0 0;
-	
 }
 
 .cart-totals .cart-table th {
@@ -7446,94 +7444,3 @@ only screen and (min-device-pixel-ratio: 2) {
 	}
 	
 	@media only screen and (max-width: 1024px) {#style-switcher {display: none;}}
-
-
-
-/*手機版設定*/
-@media only screen and (min-width: 320px) and (max-width: 770px) {
-	#below-menu{
-	position: fixed;
-	display: block;
-	width: 100%;
-	height: 42px;
-	bottom: 0px;
-	background-color: #5E5E5E;
-	z-index: 10;
-	padding: 0px;
-	/*opacity: 0.4;*/
-      }	
-	
-	#below-menu .login-btn {
-	right: 0px;
-	float: right;
-	position: fixed;
-	
-  }
-	
-	#below-menu .login-btn i{
-	background: #e7141a;
-	color: #ffffff;
-	padding: 14px;
-	z-index: 999;
-  }
-  #below-menu .login-btn i:hover{
-	background: #000;
-  }
-
-	#cart .cart-btn{
-	bottom: 0px;
-	z-index: 999;
-	left: 0px;
-	float: left;
-	}
-	
-	#logo{width: 100px;float: left;margin-bottom: -40px;}
-
-
-	.top-search{float: right; margin-top: 0px;}
-	
-	#footer-bottom{
-	bottom: 40px;
-	position: relative;
-	}
-	
-	#backtotop {
-	position: fixed;
-	right: 0;
-	display: none;
-	bottom: 60px;
-	margin: 0 20px 0 0;
-    }
-	
-	/*廣告*/
-	.caption.dark h2,
-	.caption.darkh3,
-	.caption h2,
-	.caption.dark h3 {
-	font-size: 12px;
-	line-height: 18px;
-}
-	
-	.caption .caption-btn{font-size: 10px;}
-	
-	a.caption-btn {
-	cursor: pointer;
-	padding: 10px;
-	display: inline-block;
-	text-transform: uppercase;
-	font-size: 9px;
-	outline: none;
-	overflow: hidden;
-	position: relative;
-	z-index: 10;
-	background-color: #fff;
-	color: #555;
-	-webkit-transition: all 0.2s ease-in-out;
-	-moz-transition: all 0.2s ease-in-out;
-	-o-transition: all 0.2s ease-in-out;
-	-ms-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
-}
-	
-	.mobilehide{display: none;}
-}
