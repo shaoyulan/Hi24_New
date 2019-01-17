@@ -7,6 +7,12 @@
 	display: none;
 }
 
+/*cart page*/
+#js-cartRowTmp.hide{
+	display: none;
+}
+
+
 /*detail page*/
 .selectListOuterWrap .selectListInnerWrap .selectListTop {
 	color:red!important;

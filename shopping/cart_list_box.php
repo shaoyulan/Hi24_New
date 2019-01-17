@@ -37,16 +37,13 @@
 					
 						
 				<!-- Item #1 -->
-				<tr id="js-cartRowTmp" class="js-cartRowTmp">
+				<tr id="js-cartRowTmp" class="js-cartRowTmp hide">
 					<td><img src="../images/small_product_list_08.jpg" alt=""/></td>
 					<td class="cart-title"><a class="name" href="../product/product_detail.html">37621031 毛圈休閒長褲-男 </a></td>
 					<td class="price">$479.00</td>
 	                <td>
-	                  <select id="color" name="color">
-							<option>棕色</option>
-							<option>米白色</option>
-							<option>酒紅色</option>
-							<option>黑色</option>
+	                  <select id="js-color" name="color">
+							<!-- color options here -->
 						</select>
 	                </td>
 	                <td>
@@ -152,3 +149,7 @@
 	<script src="../scripts/stacktable.js"></script>
 	<script src="../scripts/custom.js"></script> -->
 </div>
+<script>
+
+
+</script>

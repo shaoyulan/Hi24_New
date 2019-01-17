@@ -29,6 +29,11 @@ if ($_POST['mode']=='2'){
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':id',$_POST['id']);
 
+}elseif ($_POST['mode']=='get_color_avalible') {
+	// command SQL  
+	$sql ='SELECT DISTINCT `title`FROM `product_item_detail` WHERE `product_list_ref`=:id ORDER BY `id` ASC';
+	$statement = $pdo->prepare($sql);
+	$statement->bindValue(':id',$_POST['id']);
 }elseif ($_POST['mode']=='product_item_detail_size') {
 	// 
 	$sql ='SELECT DISTINCT `size` FROM `product_item_detail` WHERE `title`=:title AND `product_list_ref`=:`productId` ORDER BY `size` ASC';
