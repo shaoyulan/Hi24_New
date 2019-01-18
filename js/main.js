@@ -14,6 +14,18 @@ $(document).ready(function() {
 		}
 	}
 
+	// 回傳自訂時間格式
+	function time($format){
+		var dateObj = new Date();
+		var date;
+		switch($format){
+			case 'today':
+				date = dateObj.getFullYear()+'-'+(dateObj.getMonth()+1)+'-'+(dateObj.getDate());
+			break;
+		}
+		return date;
+	}
+
 	//建立模板產生、放置器 fill template function
 	function place_data($structure,$target,$data)
 	{
@@ -276,36 +288,25 @@ $(document).ready(function() {
 			productid = itemBox.data('productid'),
 			// 被選商品detailid
 			detailid = itemBox.data('detailid'),
-			// 折扣後金額 Discounted Price
-			priceDis = itemBox.find('.js-disPrice').text().slice(1);
+			// 商品金額  Price; 折扣 discount || 沒有折扣 no discount
+			price = itemBox.find('.js-disPrice').text().slice(1) || itemBox.find('.product-price').text().slice(1);
 
-		
-
-		// 假如本商品有折扣 if discount exists
-		if(priceDis){
-			//use discount price
-			var price =priceDis;
-		}else{
-			// use org price
-			var price = itemBox.find('.product-price').text().slice(1); 
-			
-		}
 		
 		// 加入購物車/取消 buy or cancel 
-		var target = $(e.target).parent().next().find('section');
-		var itemNuber = parseInt($('#cart-amount').text());
+		var target = $(e.target).parent().next().find('section'); // 加入購物車按鈕
+		var itemNuber = parseInt($('#cart-amount').text()); // 目前購物車商品數量
 
 		// 被選的商品是要取消 或 加入
 		if(target.hasClass('buy')){
 		//取消
 			// renew total number
 			$('#cart-amount').text(--itemNuber);
-			// cancel order so price = -price
-			price = price - (price*2);
+			// cancel order so price -price
+			price = -price;
 			// 依productid detailid 取得購物車內的目標
 			var criteria = '.js-cartItem[data-productid="'+productid+'"]';
-			criteria += '[data-detailid="'+detailid+'"]';
-			itemRow = $(criteria);
+				criteria += '[data-detailid="'+detailid+'"]';
+			var itemRow = $(criteria);
 			// 刪除cart array 對應
 			cart.splice([itemRow.data('no')],1);
 			// 刪除該筆item row
@@ -328,18 +329,22 @@ $(document).ready(function() {
 			  	//data-no 用於對應cart 陣列排序
 				.attr({'data-productid':productid,'data-detailid':detailid,'data-no':(itemCount-1)});
 
-				var size = size || '', qty =qty || 1, total = price*qty;
+				var size = size || '', qty =qty || 1, total = price*qty, memberid = memberid || 0,
+					color = color || '', date = time('today');
 				// 更新購物車陣列
 				cart.push({
+					memberid:memberid,
+					orderdate:date,
 					productid:productid,
 					detailid:detailid,
 					itemName:itemName,
 					price:price,
 					size:size,
+					color:color,
 					qty:qty,
 					total:total
 				});
-				console.log(cart.length);
+				console.log(cart);
 		}
 		
 
