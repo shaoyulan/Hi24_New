@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jan 13, 2019 at 10:40 PM
+-- Generation Time: Jan 18, 2019 at 08:36 AM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -114,7 +114,8 @@ CREATE TABLE `product_default_photos` (
 --
 
 INSERT INTO `product_default_photos` (`id`, `inner_photo1`, `inner_photo2`, `inner_photo3`, `inner_photo4`, `product_list_ref`) VALUES
-(1, 'images/women/sweater/sw001a-1.jpg', 'images/women/sweater/sw001a-2.jpg', 'images/women/sweater/sw001a-3.jpg', 'images/women/sweater/sw001a-4.jpg', 0);
+(1, 'images/women/sweater/sw001a-1.jpg', 'images/women/sweater/sw001a-2.jpg', 'images/women/sweater/sw001a-3.jpg', 'images/women/sweater/sw001a-4.jpg', 1),
+(2, '/images/women/accessories/a001a-1.jpg\r\n', '/images/women/accessories/a001a-2.jpg\r\n', '/images/women/accessories/a001a-3.jpg\r\n', '/images/women/accessories/a001a-4.jpg\r\n', 2);
 
 -- --------------------------------------------------------
 
@@ -140,7 +141,11 @@ INSERT INTO `product_item_detail` (`id`, `title`, `item_id`, `color`, `size`, `m
 (1, '麻花卡其', 1, '/images/women/sweater/sw001ai-1.jpg', 'S', '/images/women/sweater/sw001a.jpg', 1),
 (2, '麻花奶油', 2, '/images/women/sweater/sw001ai-2.jpg', 'S', '/images/women/sweater/sw001b.jpg', 1),
 (3, '麻花深黑', 3, '/images/women/sweater/sw001ai-3.jpg', 'L', '/images/women/sweater/sw001c.jpg', 1),
-(4, '麻花深黑', 4, '/images/women/sweater/sw001ai-3.jpg', 'XL', '/images/women/sweater/sw001c.jpg', 1);
+(4, '麻花深黑', 4, '/images/women/sweater/sw001ai-3.jpg', 'XL', '/images/women/sweater/sw001c.jpg', 1),
+(5, '格紋米色', 5, '/images/women/accessories/a001ai-1.jpg', 'S', '/images/women/accessories/a001a-1.jpg', 2),
+(6, '格紋咖啡', 6, '/images/women/accessories/a001ai-2.jpg', 'L', '/images/women/accessories/a001a-2.jpg', 2),
+(7, '格紋深灰', 7, '/images/women/accessories/a001ai-3.jpg', 'M', '/images/women/accessories/a001a-3.jpg', 2),
+(8, '格紋深灰', 8, '/images/women/accessories/a001ai-3.jpg', 'S', '/images/women/accessories/a001a-3.jpg', 2);
 
 -- --------------------------------------------------------
 
@@ -235,12 +240,12 @@ ALTER TABLE `member`
 -- AUTO_INCREMENT for table `product_default_photos`
 --
 ALTER TABLE `product_default_photos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `product_item_detail`
 --
 ALTER TABLE `product_item_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `product_list`
 --
