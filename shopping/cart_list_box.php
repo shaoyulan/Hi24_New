@@ -42,12 +42,12 @@
 					<td class="cart-title"><a class="name" href="../product/product_detail.html">37621031 毛圈休閒長褲-男 </a></td>
 					<td class="price">$479.00</td>
 	                <td>
-	                  <select id="js-color" name="color">
+	                  <select class="js-color" name="color">
 							<!-- color options here -->
 						</select>
 	                </td>
 	                <td>
-	                <select id="size" name="size">
+	                <select class="size" name="size">
 							<option>S</option>
 							<option>M</option>
 							<option>L</option>

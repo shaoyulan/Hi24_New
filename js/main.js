@@ -1,14 +1,19 @@
 $(document).ready(function() {
 	// 建立購物車陣列
 	cart = [];
-	// 首頁初始化
 	index_setup();
-	color_avaliable(1);
+
+	renewCart(0);
 	// 使用者是否存在
 	function check_userExist(){
 
 		if(sessionStorage.getItem('username')){
 			return sessionStorage.getItem('username');
+			// 修改登入區顯示大名
+
+			// 顯示購物車資訊
+
+
 		}else{
 			return false;
 		}
@@ -64,13 +69,8 @@ $(document).ready(function() {
 		}
 	}
 
-	function color_avaliable($productid){
-		$.post('../crud/dataFiltered.php', {id:$productid,mode:'get_color_avalible'}, function(data,t,x) {
-			return data;
-		});
-	}
 
-	function Page_loader(e,$page_to_load,$after_load,$push='yes'){
+	function Page_loader(e,$page_to_load,$after_load,$push='yes',$info){
 		// shut previous load thread
 		window.stop();		
 		// 網站頁面載入，使用者是否存在
@@ -89,6 +89,10 @@ $(document).ready(function() {
 			// 網址列須變更，否則視為同一頁?
 			var fill = $page_to_load,
 				fill = fill.split('/')[1];
+			// 新增history
+			history.pushState($info,'',fill);
+			// 讓網址維持 localhost:8888
+			// history.replaceState(fill,'','/');
 			console.log('state',history.state);
 		}
 
@@ -166,7 +170,7 @@ $(document).ready(function() {
 			// 預設選擇第一個
 			$('.color-buttons li a:first').css('border','1px solid');
 
-		},$push);
+		},$push,productId);
 	}
 
 	// 主分類中譯
@@ -186,6 +190,59 @@ $(document).ready(function() {
 		return Cat;
 	}
 
+	//首頁載入時更新購物車
+	function renewCart($memberid){
+		$.post('../crud/dataFiltered.php', {memberid:$memberid,mode:'get_cart'}, function($cart, textStatus, xhr) {
+			// 修改全域
+			cart = $cart;
+			//DB購物車有東西
+			if(cart.length > 0){
+				var cartInfo = $('.js-cartInfo'),
+					// 購物車目前商品數 Number of items in cart
+					itemCount = 0, 
+					// 購物車現有金額 fetch current Cart total
+					currentP = 0;
+				
+				$.each(cart,function(index, item) {
+					//拿空範本
+					var itemRow = $('#js-cartItem').clone(),
+						// 購物車的最後一筆 Last item in cart
+						lastItem = $('.js-cartItem:last');
+
+					itemRow // 購物車放入新的商品
+						.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide')
+						// 修改標題
+						.find('.js-itemTitle').text(item.itemName)
+					  	// 修改金額
+					  	.end()
+					  	.find('.js-itemPrice').text(item.price)
+					  	// 加上productid、detailid
+					  	.end() 
+					  	//data-no 用於對應cart 陣列排序
+						.attr({'data-productid':item.productid,'data-detailid':item.detailid,'data-no':(index+1)});
+						// 購物車金額累加
+						currentP += item.price;
+						itemCount ++;
+				});
+
+				// 更新購物車金額
+				$('.cart-btn a span').text('$'+currentP+'元');
+
+				// 更新購物車數量
+				$('#cart-amount').text(itemCount);
+
+				// 是否須隱藏空購物車INFO
+				if(itemCount ==1){ //只有template時
+					cartInfo.addClass('hide');
+				}else if(itemCount >=2){
+					if(!cartInfo.hasClass('hide')){
+						cartInfo.toggleClass('hide');
+					}
+				}
+			}
+		});
+
+	}
 
 	// 購物車頁面
 	function cart_list_box(e){
@@ -194,27 +251,36 @@ $(document).ready(function() {
 			e.stopPropagation();
 		}
 		
+		
+
 		Page_loader(e,"../shopping/cart_list_box.php",function(e){
-			// 取得購物清單(:not 範本)
-			$.each(cart,function(key,item){
-				// 貨幣格式化
-				var total = new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2 }).format(item.total);
-				var cartRow = $('#js-cartRowTmp').clone().removeAttr('id').insertAfter('#js-cartRowTmp');
-				// 更新資料
-				cartRow.find('.name').removeClass('hide').text(item.itemName)
-					   .end()
-					   .find('.price').text('$'+item.price)
-					   .end()
-					   .find('.cart-total').text('$'+total);
 
-				// 設定顏色選項 
-				console.log(color_avaliable(1));
-				$(colors_avalible).each(function(i, value) {
-					var option = document.createElement('option');
-					option.textContent = value[i].title;
-					option.appendTo('#js-color');
+			// 從資料庫抓購物車 / 也可直接從全域cart
+			$.post('../crud/dataFiltered.php', {memberid:0,mode:'get_cart'}, function($cart, textStatus, xhr) {
+				// 取得購物清單(:not 範本)
+				$.each($cart,function(key,item){
+					// 貨幣格式化
+					var total = new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2 }).format(item.total);
+					var cartRow = $('#js-cartRowTmp').clone().removeAttr('id').insertAfter('#js-cartRowTmp');
+					// 更新資料
+					cartRow.find('.name').removeClass('hide').text(item.itemName)
+						   .end()
+						   .find('.price').text('$'+item.price)
+						   .end()
+						   .find('.cart-total').text('$'+total);
+
+					// 設定顏色選項 
+					$.post('../crud/dataFiltered.php', {id:item.productid,mode:'get_color_avalible'}, function(data,t,x) {
+						$(data).each(function(i, value) {
+							//為每個顏色建立option
+							var option = document.createElement('option');
+							option.textContent = value.title;
+							option.value = value.title;
+							$('.js-color').append(option);
+						});
+					});
+					
 				});
-
 			});
 
 		});
@@ -227,9 +293,11 @@ $(document).ready(function() {
 		$('#backtotop').click(function(e){
 			scrollTop();		
 		})
-/*
+
 	$(window).on('popstate',function(e){
 		var func = location.pathname;
+		console.log(history.state);
+
 
 		//pathname '/' = 要呼叫'index'
 		if(func=='/' || func=='/index.php'){
@@ -247,11 +315,12 @@ $(document).ready(function() {
 			func +='(e,"no")';
 		}
 		
-		Page_loader(e,$page_to_load,$after_load,$push='yes')
+		// Page_loader(e,$page_to_load,$after_load,$push='yes')
 
 		eval(func);
+		
 	});
-*/
+
 	// 網站初始載入，使用者是否存在
 	if(check_userExist()){
 		username = check_userExist();
@@ -344,7 +413,13 @@ $(document).ready(function() {
 					qty:qty,
 					total:total
 				});
-				console.log(cart);
+
+				// 更新資料庫購物車
+				 // 
+				 var last = [];last.push(cart[cart.length-1])
+				$.post('../crud/create.php', {cart: last,mode:'add_cart'}, function(data, stextStatu, xhr) {
+					// console.log(data);
+				});
 		}
 		
 
