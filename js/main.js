@@ -89,7 +89,7 @@ $(document).ready(function() {
 			// 網址列須變更，否則視為同一頁?
 			var fill = $page_to_load,
 				fill = fill.split('/')[1];
-			// 新增history
+			// 新增history $info 可做為傳遞productid
 			history.pushState($info,'',fill);
 			// 讓網址維持 localhost:8888
 			// history.replaceState(fill,'','/');
@@ -285,6 +285,7 @@ $(document).ready(function() {
 
 		});
 	}
+
 	// InterFace UI/UX
 		function scrollTop(){
 			$('body').animate({'scrollTop':0},600);
