@@ -202,7 +202,7 @@
 							$.each(data,function(key,value){
 								var size = value["size"];
 								console.log('size',size);
-								$(".selectList dd:contains('"+size+"')").addClass('avalible');
+								$(".selectList dd").addClass('avalible');
 							});
 						});
 
