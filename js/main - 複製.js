@@ -1,4 +1,4 @@
-﻿$(document).ready(function() {
+$(document).ready(function() {
 	// 建立購物車陣列
 	cart = [];
 	index_setup();
@@ -93,6 +93,7 @@
 			history.pushState($info,'',fill);
 			// 讓網址維持 localhost:8888
 			// history.replaceState(fill,'','/');
+			console.log('state',history.state);
 		}
 
 		$('#footer').delay(1000).fadeIn(500);
@@ -124,116 +125,69 @@
 		*/
 	}
 
+	function product_detail(e,$this,$push='yes'){
+		// 被選的商品 clicked item
+		var itemBox = $(e.target).closest('.js-itemBox');
 
-	function product_detail(e,$this,$push='yes',$productId){
-		
+		// 換頁前先取得商品資料 fetch item info before leaving
 		if(e){
 			if($push!='no'){
-				// productid 是點擊傳入
 				e.preventDefault();
 				e.stopPropagation();
 				$push = 'yes';
 
-				var itemBox = $(e.target).closest('.js-itemBox'),
+				// e存在&不要push時 代表是使用者點擊商品
+				var title = itemBox.data('title'),
+					mainCat = itemBox.data('maincat'),
+					price_org = itemBox.find('product-price').text(),
+					price_dis = itemBox.find('.js-disPrice').text(),
 					productId = itemBox.data('productid'),
 					detailId = itemBox.data('detailid');
 
-				// e存在&不要push時 代表是使用者點擊商品
-				// var title = itemBox.data('title'),
-				// 	mainCat = itemBox.data('maincat'),
-				// 	price_org = itemBox.find('product-price').text(),
-				// 	price_dis = itemBox.find('.js-disPrice').text(),
-				// 	productId = itemBox.data('productid'),
-				// 	detailId = itemBox.data('detailid');
-			}else{
-			// ProductId 是參數
-			var productId = $productId,
-				detailId = '';
 			}
-		}
+		}// e若不存在 使代表要用全域變數
+		
+		Page_loader(e,"product/product_detail.php",function(e){
 
-		// 換頁前先取得商品資料 fetch item info before leaving
-		$.post('../crud/dataFiltered.php',{productid:productId,mode:'product_detail'},function(data,m,x){
-
-			var title = data[0].title,
-				mainCat = data[0].category_main,
-				price_org = data[0].price_org,
-				price_dis = data[0].price_dis;
-
-			Page_loader(e,"product/product_detail.php",function(e){
-
-				// Do after_load
-				//**************IMPORTANT : Propagation !!******************
-				$('.title-section').data('productid',productId);
-				$('.title-section').find('.title').text(title);
-				$('.js-maincat-ch').text(Category_translate(mainCat));
-				$('.js-maincat-en').text(mainCat);  
-				$('.price-org').text(price_org);
-				$('.price-dis').text(price_dis);
-				// 載入下方四張大圖
-				Call_AJAX_place_data({id:productId,mode:'get_defPhotos'},'.js-defPhotos-putHere','#product_defPhotos_tmp');
-				// 載入替換的四張照片、設定對應色塊
-				$.post('../crud/dataFiltered.php',{id:productId,mode:'get_mainPhotos'},function(data,t,x){
-					var photoBox = $('.rsContainer .rsSlide .rsImg'),
-						colorBox = $('.color-buttons img'),
-						colorLength = data.length;
-
-					//載入照片
-					photoBox.each(function(i,k){
-						$(k).attr({'src':data[i].main_photo_substitute,'data-rsTmb':data[i].color,'data-title':data[i].title});
-					});
-					
-					// 載入色塊
-					colorBox.each(function(r,m){
-						// 資料數量必須大於 目前索引編號
-						if(r<data.length){
-							// onMouseOver 
-							var onMouseOver = "MM_swapImage('photo','','"+data[r].main_photo_substitute+"',0)";
-							$(m).attr({'src':data[r].color,'data-title':data[r].title,'onMouseOver':onMouseOver});
-						}
-					});
-
-					// 預設選擇第一個
-					$('.color-buttons li a:first').css('border','1px solid');
-					// 第一個的avalible size
-						// 選取distinct size 當顏色 = 第一個顏色title/ prodcutrefid = product id
-						var title = $('.color-buttons li:first img').data('title');
-						$.post('../crud/dataFiltered.php',{colorTitle:title,productId:productId,mode:'get_size_avalible'},function(size,m,x){
-							$.each(data,function(key,value){
-								var size = value["size"];
-								console.log('size',size);
-								$(".selectList dd:contains('"+size+"')").addClass('avalible');
-							});
-						});
-
-
-					// 做色塊對應Size的on
+			// Do after_load
+			// Chane Breadcrumbs 
+			//**************IMPORTANT : Propagation !!******************
+			$('.title').data('productid',productId);
+			$('.js-maincat-ch').text(Category_translate(mainCat));
+			$('.js-maincat-en').text(mainCat);  
+			$('.price-org').text(price_org);
+			$('.price-dis').text(price_dis);
+			// 載入下方四張大圖
+			Call_AJAX_place_data({id:productId,mode:'get_defPhotos'},'.js-defPhotos-putHere','#product_defPhotos_tmp');
+			// 載入替換的四張照片、設定對應色塊
+			$.post('../crud/dataFiltered.php',{id:productId,mode:'get_mainPhotos'},function(data,t,x){
+				var target = $('.rsContainer .rsSlide');
+				target.each(function(i,k){
+					$(this).attr({'src':data[i].main_photo_substitute,'data-rsTmb':data[i].color})
 				});
+			});
 
-				
+			// 預設選擇第一個
+			$('.color-buttons li a:first').css('border','1px solid');
 
-			},$push,productId);
-
-		});
+		},$push,productId);
 	}
 
 	// 主分類中譯
-	// ***HTML編碼為UTF-8 因有中文輸出，請將本JS存成UTF8***
 	function Category_translate($EngName){
 		var Cat;
 		switch($EngName){
 			case 'men':
-				Cat = "男裝";
+				Cat = '男裝';
 				break; 
 			case 'women':
-				Cat ="女裝"
+				Cat ='女裝'
 				break;
 			case 'kid':
-				Cat ="童裝"
+				Cat ='童裝'
 				break;
 		}
 		return Cat;
-
 	}
 
 	//首頁載入時更新購物車
@@ -343,7 +297,7 @@
 
 	$(window).on('popstate',function(e){
 		var func = location.pathname;
-		var productId = history.state;
+		console.log(history.state);
 
 
 		//pathname '/' = 要呼叫'index'
@@ -356,8 +310,8 @@
 		}
 
 		// 不同頁面參數調整
-		if(func=='product_detail'){
-			func +='(e,this,"no",'+productId+')';
+		if(func=='Product_detail'){
+			func +='(e,this,"no")';
 		}else{
 			func +='(e,"no")';
 		}
@@ -490,7 +444,7 @@
 
 	// 商品詳細頁點擊載入 - -- ALL
 	$('body').on('click','a[href="product/product_detail.html"]',function(e){
-		product_detail(e,this,'yes');
+		product_detail(e,this);
 	});
 
 

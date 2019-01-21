@@ -17,3 +17,8 @@
 .selectListOuterWrap .selectListInnerWrap .selectListTop {
 	color:red!important;
 }
+
+
+.selectList dd.avable{
+	color:black!important;
+}

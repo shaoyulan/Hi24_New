@@ -79,8 +79,8 @@ function MM_swapImage() { //v3.0
 		<div class="product-page">
 			
 			<!-- Headline -->
-			<section class="title" data-productid=''>
-				<h2>棉質編織圓領毛衣-女（ <span class="js-colorSize">麻花卡其 -S</span>）</h2>
+			<section class="title-section" data-productid=''>
+				<h2><span class='title'>棉質編織圓領毛衣-女</span>（ <span class="js-colorSize">麻花卡其 -S</span>）</h2>
                 <p>商品編號：37447011</p>
                 
                 
@@ -101,11 +101,13 @@ function MM_swapImage() { //v3.0
 				<div class="color-buttons">                
                 <h4>Color</h4>
 					<ul>
-						<li><a href="#"><img src="images/women/sweater/sw001ai-1.jpg"  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001a.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
-						<li><a href="#"><img src="images/women/sweater/sw001ai-2.jpg"  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001b.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
-						<li><a href="#"><img src="images/women/sweater/sw001ai-3.jpg"  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001c.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
-                        <li><a href="#"><img src="images/women/sweater/sw001ai-4.jpg"  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001d.jpg',0)" onMouseOut="MM_swapImgRestore()" /></a></li>
+						<li><a href="#"><img src=""  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001a.jpg',0)" onMouseOut="MM_swapImgRestore()" data-title="" data-ip="黑頭"/></a></li>
+						<li><a href="#"><img src=""  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001b.jpg',0)" onMouseOut="MM_swapImgRestore()" data-title=""/></a></li>
+						<li><a href="#"><img src=""  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001c.jpg',0)" onMouseOut="MM_swapImgRestore()" data-title=""/></a></li>
+                        <li><a href="#"><img src=""  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001d.jpg',0)" onMouseOut="MM_swapImgRestore()" data-title=""/></a></li>
 					</ul>
+
+
 				</div>
 				<div class="clearfix"></div>                
 

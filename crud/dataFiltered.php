@@ -17,6 +17,11 @@ if ($_POST['mode']=='2'){
 	$statement->bindValue(':category_main',$_POST['category_main']); 
 	$statement->bindValue(':category_sub',$_POST['category_sub']);
 	//should use " cause :category_main in $sql only accept "abc"
+}elseif($_POST['mode']=='product_detail'){
+	// command SQL 
+	$sql ='SELECT * FROM `product_list` WHERE `id`=:productid ORDER BY `id` ASC';
+	$statement = $pdo->prepare($sql);
+	$statement->bindValue(':productid',$_POST['productid']); 
 }elseif ($_POST['mode']=='get_defPhotos') {
 	// command SQL 
 	$sql ='SELECT * FROM `product_default_photos` WHERE `id`=:id ORDER BY `id` ASC';
@@ -34,7 +39,7 @@ if ($_POST['mode']=='2'){
 	$sql ='SELECT DISTINCT `title`FROM `product_item_detail` WHERE `product_list_ref`=:id ORDER BY `id` ASC';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':id',$_POST['id']);
-}elseif ($_POST['mode']=='product_item_detail_size') {
+}elseif ($_POST['mode']=='get_size_avalible') {
 	// 
 	$sql ='SELECT DISTINCT `size` FROM `product_item_detail` WHERE `title`=:title AND `product_list_ref`=:`productId` ORDER BY `size` ASC';
 	$statement = $pdo->prepare($sql);
