@@ -80,14 +80,14 @@ function MM_swapImage() { //v3.0
 			
 			<!-- Headline -->
 			<section class="title-section" data-productid=''>
-				<h2><span class='title'>棉質編織圓領毛衣-女</span>（ <span class="js-colorSize">麻花卡其 -S</span>）</h2>
-                <p>商品編號：37447011</p>
+				<h2><span class='title'>棉質編織圓領毛衣-女</span>（ <span><span class="js-color">麻花卡其</span> -<span class="js-size">S</span></span>）</h2>
+                <p>商品編號：<span class="js-id">37447011</span></p>
                 
                 
                 <div class="clearfix"></div>              
                         
                 <div class="product-discount-detail">
-				<span class="product-price-discount"><span class="price-org">$599</span> <i><b>$</b class="price-dis">399</i></span>
+				<span class="product-price-discount"><b class="js-dollarSg">$</b><span class="price-org"></span> <i><b>$</b class="price-dis">399</i></span>
                 <span  class="product-activity"><a href="#">冬日煥新．限時搶購</a></span>
                 </div>       
 			</section>
@@ -101,7 +101,7 @@ function MM_swapImage() { //v3.0
 				<div class="color-buttons">                
                 <h4>Color</h4>
 					<ul>
-						<li><a href="#"><img src=""  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001a.jpg',0)" onMouseOut="MM_swapImgRestore()" data-title="" data-ip="黑頭"/></a></li>
+						<li><a href="#" class="active"><img src=""  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001a.jpg',0)" onMouseOut="MM_swapImgRestore()" data-title="" /></a></li>
 						<li><a href="#"><img src=""  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001b.jpg',0)" onMouseOut="MM_swapImgRestore()" data-title=""/></a></li>
 						<li><a href="#"><img src=""  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001c.jpg',0)" onMouseOut="MM_swapImgRestore()" data-title=""/></a></li>
                         <li><a href="#"><img src=""  alt="" onMouseOver="MM_swapImage('photo','','images/women/sweater/sw001d.jpg',0)" onMouseOut="MM_swapImgRestore()" data-title=""/></a></li>

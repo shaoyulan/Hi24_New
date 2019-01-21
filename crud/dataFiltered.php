@@ -41,15 +41,15 @@ if ($_POST['mode']=='2'){
 	$statement->bindValue(':id',$_POST['id']);
 }elseif ($_POST['mode']=='get_size_avalible') {
 	// 
-	$sql ='SELECT DISTINCT `size` FROM `product_item_detail` WHERE `title`=:title AND `product_list_ref`=:`productId` ORDER BY `size` ASC';
+	$sql ='SELECT DISTINCT `size` FROM `product_item_detail` WHERE `title`=:title AND `product_list_ref`=:productId ORDER BY `size` ASC';
 	$statement = $pdo->prepare($sql);
-	$statement->bindValue(':title',$_POST['title']);
-	$statement->bindValue(':product_list_ref',$_POST['productId']);
+	$statement->bindValue(':title',$_POST['colorTitle']);
+	$statement->bindValue(':productId',$_POST['productId']);
 
-}elseif ($_POST['mode']=='product_item_detail_id') {
+}elseif ($_POST['mode']=='get_id') {
 	$sql ='SELECT `item_id` FROM `product_item_detail` WHERE `title`=:title AND `size`=:size';
 	$statement = $pdo->prepare($sql);
-	$statement->bindValue(':title',$_POST['title']);
+	$statement->bindValue(':title',$_POST['colorTitle']);
 	$statement->bindValue(':size',$_POST['size']);
 
 }elseif ($_POST['mode']=='get_cart') {

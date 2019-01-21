@@ -6039,6 +6039,7 @@ section.variables {
 	cursor: pointer;
 	padding: 6px 15px;
 	color:#d0d0d0;
+	cursor:not-allowed;
 }
 
 .customSelect .disabled {

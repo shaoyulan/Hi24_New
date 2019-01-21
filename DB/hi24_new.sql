@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jan 18, 2019 at 08:36 AM
+-- Generation Time: Jan 21, 2019 at 11:17 PM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -21,6 +21,34 @@ SET time_zone = "+00:00";
 --
 -- Database: `hi24_new`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
+  `memberid` int(11) DEFAULT NULL,
+  `orderdate` date NOT NULL,
+  `productid` int(11) NOT NULL,
+  `detailid` int(11) DEFAULT NULL,
+  `itemName` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `price` int(11) NOT NULL,
+  `size` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `color` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `qty` int(11) NOT NULL,
+  `total` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`id`, `memberid`, `orderdate`, `productid`, `detailid`, `itemName`, `price`, `size`, `color`, `qty`, `total`) VALUES
+(15, 0, '2019-01-19', 1, 0, '棉質條紋寬領長袖T恤-男', 379, '', '', 1, 379),
+(16, 0, '2019-01-21', 2, 0, '棉質條紋寬領長袖T恤-女', 299, '', '', 1, 299);
 
 -- --------------------------------------------------------
 
@@ -59,16 +87,24 @@ INSERT INTO `header_ad` (`id`, `transition`, `speed`, `page_url`, `img_url`, `al
 
 CREATE TABLE `member` (
   `id` int(11) NOT NULL,
-  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(45) COLLATE utf8_unicode_ci NOT NULL
+  `country` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `firstname` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `lastname` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `addr` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `city` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `postcode` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `tel` varchar(45) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `member`
 --
 
-INSERT INTO `member` (`id`, `name`, `password`) VALUES
-(1, 'shao', 'root');
+INSERT INTO `member` (`id`, `country`, `username`, `password`, `firstname`, `lastname`, `addr`, `city`, `postcode`, `email`, `tel`) VALUES
+(1, '', 'shao', 'root', '', '', '', NULL, NULL, '', '');
 
 -- --------------------------------------------------------
 
@@ -187,6 +223,12 @@ INSERT INTO `product_list` (`id`, `active_stat`, `activity_text`, `img_url1`, `i
 --
 
 --
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `header_ad`
 --
 ALTER TABLE `header_ad`
@@ -226,6 +268,11 @@ ALTER TABLE `product_list`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `header_ad`
 --

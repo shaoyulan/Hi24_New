@@ -18,7 +18,13 @@
 	color:red!important;
 }
 
-
-.selectList dd.avable{
-	color:black!important;
+ /*selected color*/
+.color-buttons a.active{
+	border:1px solid black;
 }
+ /*avalible size*/
+.selectList dd.avalible{
+	color:black;
+	cursor:pointer;
+}
+
