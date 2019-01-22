@@ -184,16 +184,12 @@
 					var photoBox = $('.rsContainer .rsSlide .rsImg'),
 						colorBox = $('.color-buttons img'),
 						colorLength = data.length;
-/*
+
 					for (var i = 0; i <= data.length; i++) {
 						// 左側大圖載入
-						$(photoBox[i]).attr({'src':data[i].main_photo_substitute,'data-rsTmb':data[i].color,'data-title':data[i].title});
-						// 左側小圖載入
-						var onMouseOver = "MM_swapImage('photo','','"+data[i].main_photo_substitute+"',0)";
-						$(colorBox[i]).attr({'src':data[i].color,'data-title':data[i].title,'onMouseOver':onMouseOver});
 
+						// 左側小圖載入
 					}
-*/
 
 					//載入照片
 					photoBox.each(function(i,k){
