@@ -164,8 +164,7 @@
 
 				// Do after_load
 				//**************IMPORTANT : Propagation !!******************
-				console.log('pid',productId);
-				$('.title-section').data('productid',productId);
+				$('.title-section, .button.adc').data('productid',productId);
 				$('.title-section').find('.title').text(title);
 				$('.js-maincat-ch').text(Category_translate(mainCat));
 				$('.js-maincat-en').text(mainCat); 
@@ -472,7 +471,7 @@
 			// 被選商品品名
 			//itemName = itemBox.find('h5').text(),
 			// 被選商品productid
-			productid = itemBox.data('productid');
+			productid = itemBox.data('productid') || $('.button.adc').data('productid');
 /*			// 被選商品detailid
 			detailid = itemBox.data('detailid'),
 			// 商品金額  Price; 折扣 discount || 沒有折扣 no discount
@@ -482,14 +481,14 @@
 		// 加入購物車/取消 buy or cancel 
 		var target = $(e.target).parent().next().find('section') || ''; // 加入購物車按鈕
 		var itemNuber = parseInt($('#cart-amount').text()); // 目前購物車商品數量
+		console.log('inumber0',itemRow);
 
 		// 依productid 取得商品資訊
-		$.post('../crud/dataFiltered.php',{prodcutid:productid,mode:'product_detail'},function(data,m,x){
-			console.log(data);
+		$.post('../crud/dataFiltered.php',{productid:productid,mode:'product_detail'},function(data,m,x){
 			var itemName = data[0].title, // 被選商品品名
 				price = data[0].price_dis || data[0].price_org, // 商品金額  Price; 折扣 discount || 沒有折扣 no discount
 				size = $('selectedValue').text() || '',
-				qty = $('input[name="quantity"]').value() || 1,
+				qty = $('input[name="quantity"]').val() || 1,
 				total = price*qty,
 				memberid = memberid || 0,
 				color = $('.color-buttons a.active img').data('title') || '', 
@@ -516,9 +515,9 @@
 			}else{
 			//加入
 				// renew total number
-				itemNumber += qty
+				itemNuber += qty;
 				$('#cart-amount').text(itemNuber);
-				
+				console.log('inumber',itemRow);
 				itemRow // 購物車放入新的商品
 					.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide')
 					// 修改標題
