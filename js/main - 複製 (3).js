@@ -164,7 +164,6 @@
 
 				// Do after_load
 				//**************IMPORTANT : Propagation !!******************
-				console.log('pid',productId);
 				$('.title-section').data('productid',productId);
 				$('.title-section').find('.title').text(title);
 				$('.js-maincat-ch').text(Category_translate(mainCat));
@@ -446,7 +445,7 @@
 	}
 
 	// Cart number counter
-	$('#wrapper').on('click','.product-button, .button.adc',function(e){
+	$('#wrapper').on('click','.product-button',function(e){
 		e.preventDefault();
 		e.stopPropagation();
 
@@ -468,112 +467,94 @@
 			// 購物車現有金額 fetch current Cart total
 			currentP = parseInt($('.cart-btn a span').text().slice(1)),
 			// 被點擊的商品 Clicked Item Box
-			itemBox = $(e.target).closest('.js-itemBox') || '';
+			itemBox = $(e.target).closest('.js-itemBox');
 			// 被選商品品名
-			//itemName = itemBox.find('h5').text(),
+			itemName = itemBox.find('h5').text(),
 			// 被選商品productid
-			productid = itemBox.data('productid');
-/*			// 被選商品detailid
+			productid = itemBox.data('productid'),
+			// 被選商品detailid
 			detailid = itemBox.data('detailid'),
 			// 商品金額  Price; 折扣 discount || 沒有折扣 no discount
-			
 			price = itemBox.find('.js-disPrice').text().slice(1) || itemBox.find('.product-price').text().slice(1);
-*/
+
+		
 		// 加入購物車/取消 buy or cancel 
-		var target = $(e.target).parent().next().find('section') || ''; // 加入購物車按鈕
+		var target = $(e.target).parent().next().find('section'); // 加入購物車按鈕
 		var itemNuber = parseInt($('#cart-amount').text()); // 目前購物車商品數量
 
-		// 依productid 取得商品資訊
-		$.post('../crud/dataFiltered.php',{prodcutid:productid,mode:'product_detail'},function(data,m,x){
-			console.log(data);
-			var itemName = data[0].title, // 被選商品品名
-				price = data[0].price_dis || data[0].price_org, // 商品金額  Price; 折扣 discount || 沒有折扣 no discount
-				size = $('selectedValue').text() || '',
-				qty = $('input[name="quantity"]').value() || 1,
-				total = price*qty,
-				memberid = memberid || 0,
-				color = $('.color-buttons a.active img').data('title') || '', 
-				ate = time('today');	
+		// 被選的商品是要取消 或 加入
+		if(target.hasClass('buy')){
+		//取消
+			// renew total number
+			$('#cart-amount').text(--itemNuber);
+			// cancel order so price -price
+			price = -price;
+			// 依productid detailid 取得購物車內的目標
+			var criteria = '.js-cartItem[data-productid="'+productid+'"]';
+				criteria += '[data-detailid="'+detailid+'"]';
+			var itemRow = $(criteria);
+			// 刪除cart array 對應
+			cart.splice([itemRow.data('no')],1);
+			// 刪除該筆item row
+			itemRow.remove();
 
-			// 判斷是在哪個頁面 (首頁: 加入/取消 商品詳細頁:加入)
-				// 詳細頁hasClass('buy') 永遠回傳false故皆為加入 OK
-			// 被選的商品是要取消 或 加入
-			if(target.hasClass('buy')){
-			//取消
-				// renew total number
-				$('#cart-amount').text(--itemNuber);
-				// cancel order so price -price
-				price = -price;
-				// 依productid detailid 取得購物車內的目標
-				var criteria = '.js-cartItem[data-productid="'+productid+'"]';
-					criteria += '[data-detailid="'+detailid+'"]';
-				var itemRow = $(criteria);
-				// 刪除cart array 對應
-				cart.splice([itemRow.data('no')],1);
-				// 刪除該筆item row
-				itemRow.remove();
-
-			}else{
-			//加入
-				// renew total number
-				itemNumber += qty
-				$('#cart-amount').text(itemNuber);
-				
-				itemRow // 購物車放入新的商品
-					.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide')
-					// 修改標題
-					.find('.js-itemTitle').text(itemName)
-				  	// 修改金額
-				  	.end()
-				  	.find('.js-itemPrice').text(price)
-				  	// 加上productid、detailid
-				  	.end() 
-				  	//data-no 用於對應cart 陣列排序
-					.attr({'data-productid':productid,'data-detailid':detailid,'data-no':(itemCount-1)});
-
-					
-					// 更新購物車陣列
-					cart.push({
-						memberid:memberid,
-						orderdate:date,
-						productid:productid,
-						detailid:detailid,
-						itemName:itemName,
-						price:price,
-						size:size,
-						color:color,
-						qty:qty,
-						total:total
-					});
-
-					// 更新資料庫購物車
-					 // 
-					 var last = [];last.push(cart[cart.length-1])
-					$.post('../crud/create.php', {cart: last,mode:'add_cart'}, function(data, stextStatu, xhr) {
-						// console.log(data);
-					});
-			}
+		}else{
+		//加入
+			// renew total number
+			$('#cart-amount').text(++itemNuber);
 			
+			itemRow // 購物車放入新的商品
+				.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide')
+				// 修改標題
+				.find('.js-itemTitle').text(itemName)
+			  	// 修改金額
+			  	.end()
+			  	.find('.js-itemPrice').text(price)
+			  	// 加上productid、detailid
+			  	.end() 
+			  	//data-no 用於對應cart 陣列排序
+				.attr({'data-productid':productid,'data-detailid':detailid,'data-no':(itemCount-1)});
 
-			// set btn to yellow bgc
-			if(target){
-				target.stop().toggleClass('buy');
+				var size = size || '', qty =qty || 1, total = price*qty, memberid = memberid || 0,
+					color = color || '', date = time('today');
+				// 更新購物車陣列
+				cart.push({
+					memberid:memberid,
+					orderdate:date,
+					productid:productid,
+					detailid:detailid,
+					itemName:itemName,
+					price:price,
+					size:size,
+					color:color,
+					qty:qty,
+					total:total
+				});
+
+				// 更新資料庫購物車
+				 // 
+				 var last = [];last.push(cart[cart.length-1])
+				$.post('../crud/create.php', {cart: last,mode:'add_cart'}, function(data, stextStatu, xhr) {
+					// console.log(data);
+				});
+		}
+		
+
+		// set btn to yellow bgc
+		target.stop().toggleClass('buy');
+
+		// 更新最新總價renew total price
+		var newPrice = parseInt(price)+currentP;
+		$('.cart-btn a span').text('$'+newPrice+'元');
+
+		// 變更訊息 顯示/隱藏
+		if(itemCount ==1){ //只有template時
+			cartInfo.addClass('hide');
+		}else if(itemCount >=2){
+			if(!cartInfo.hasClass('hide')){
+				cartInfo.toggleClass('hide');
 			}
-
-			// 更新最新總價renew total price
-			var newPrice = parseInt(price)+currentP;
-			$('.cart-btn a span').text('$'+newPrice+'元');
-
-			// 變更訊息 顯示/隱藏
-			if(itemCount ==1){ //只有template時
-				cartInfo.addClass('hide');
-			}else if(itemCount >=2){
-				if(!cartInfo.hasClass('hide')){
-					cartInfo.toggleClass('hide');
-				}
-			}
-
-		});
+		}
 	});
 
 

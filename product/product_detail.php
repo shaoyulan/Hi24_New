@@ -79,7 +79,7 @@ function MM_swapImage() { //v3.0
 		<div class="product-page">
 			
 			<!-- Headline -->
-			<section class="title-section" data-productid=''>
+			<section class="title-section" data-productid='0'>
 				<h2><span class='title'>棉質編織圓領毛衣-女</span>（ <span><span class="js-color">麻花卡其</span> -<span class="js-size">S</span></span>）</h2>
                 <p>商品編號：<span class="js-id">37447011</span></p>
                 
@@ -133,7 +133,7 @@ function MM_swapImage() { //v3.0
 					    <div class="qtyplus"></div>
 					</form>
 
-					<a href="../shopping/cart_list_box.html" class="button adc">加入購物車</a>
+					<a href="../shopping/cart_list_box.html" class="button adc" data-productid="">加入購物車</a>
 					<div class="clearfix"></div>
                     
                     <p class="remarks">超商取貨付款．滿千免運</p>
