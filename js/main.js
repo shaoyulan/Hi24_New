@@ -198,22 +198,7 @@
 						$(slider[i]).attr({'src':data[i].main_photo_substitute});
 					}
 
-/*
-					//載入照片
-					photoBox.each(function(i,k){
-						$(k).attr({'src':data[i].main_photo_substitute,'data-rsTmb':data[i].color,'data-title':data[i].title});
-					});
-					
-					// 載入色塊
-					colorBox.each(function(r,m){
-						// 資料數量必須大於 目前索引編號
-						if(r<data.length){
-							// onMouseOver 
-							var onMouseOver = "MM_swapImage('photo','','"+data[r].main_photo_substitute+"',0)";
-							$(m).attr({'src':data[r].color,'data-title':data[r].title,'onMouseOver':onMouseOver});
-						}
-					});
-*/					// 第一個的avalible size
+					// 第一個的avalible size
 						// 選取distinct size 當顏色 = 第一個顏色title/ prodcutrefid = product id
 						var title = $('.color-buttons li:first img').data('title');
 						$('.js-color').text(title); // 預設名稱為第一個的color
