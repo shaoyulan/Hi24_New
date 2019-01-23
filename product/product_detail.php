@@ -60,13 +60,13 @@ function MM_swapImage() { //v3.0
 			<div id="product-slider" class="js-mainPhotos-putHere royalSlider rsDefault">
 				<!-- js-mainPhotos-putHere -->
 			    <img class="rsImg" src="../images/women/sweater/sw001a.jpg" data-rsTmb="../images/women/sweater/sw001a.jpg" alt="" id="photo">
-			    <img class="rsImg" src="../images/women/sweater/sw001b.jpg" data-rsTmb="../images/women/sweater/sw001b.jpg" alt="" d="photo">
-			    <img class="rsImg" src="../images/women/sweater/sw001c.jpg" data-rsTmb="../images/women/sweater/sw001c.jpg" alt="" d="photo">
-                 <img class="rsImg" src="../images/women/sweater/sw001d.jpg" data-rsTmb="../images/women/sweater/sw001d.jpg" alt="" d="photo">
-			    <img class="rsImg" src="../images/women/sweater/sw001a-1.jpg" data-rsTmb="../images/women/sweater/sw001a-1.jpg" alt="" d="photo">
-			    <img class="rsImg" src="../images/women/sweater/sw001a-2.jpg" data-rsTmb="../images/women/sweater/sw001a-2.jpg" alt="" d="photo">
-			    <img class="rsImg" src="../images/women/sweater/sw001a-3.jpg" data-rsTmb="../images/women/sweater/sw001a-3.jpg" alt="" d="photo">
-			    <img class="rsImg" src="../images/women/sweater/sw001a-4.jpg" data-rsTmb="../images/women/sweater/sw001a-4.jpg" alt="" d="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001b.jpg" data-rsTmb="../images/women/sweater/sw001b.jpg" alt="" id="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001c.jpg" data-rsTmb="../images/women/sweater/sw001c.jpg" alt="" id="photo">
+                 <img class="rsImg" src="../images/women/sweater/sw001d.jpg" data-rsTmb="../images/women/sweater/sw001d.jpg" alt="" id="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001a-1.jpg" data-rsTmb="../images/women/sweater/sw001a-1.jpg" alt="" id="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001a-2.jpg" data-rsTmb="../images/women/sweater/sw001a-2.jpg" alt="" id="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001a-3.jpg" data-rsTmb="../images/women/sweater/sw001a-3.jpg" alt="" id="photo">
+			    <img class="rsImg" src="../images/women/sweater/sw001a-4.jpg" data-rsTmb="../images/women/sweater/sw001a-4.jpg" alt="" id="photo">
 			 </div>
 			 <div class="clearfix"></div>
 		</div>

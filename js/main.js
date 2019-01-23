@@ -181,20 +181,24 @@
 				Call_AJAX_place_data({id:productId,mode:'get_defPhotos'},'.js-defPhotos-putHere','#product_defPhotos_tmp');
 				// 載入替換的四張照片、設定對應色塊
 				$.post('../crud/dataFiltered.php',{id:productId,mode:'get_mainPhotos'},function(data,t,x){
-					var photoBox = $('.rsContainer .rsSlide .rsImg'),
+					var photoBox = $('.rsContainer .rsImg'),
 						colorBox = $('.color-buttons img'),
+						slider = $('.rsThumbsContainer img'),
 						colorLength = data.length;
-/*
-					for (var i = 0; i <= data.length; i++) {
+
+					// 載入資料
+					for (var i = 0; i < data.length; i++) {
 						// 左側大圖載入
 						$(photoBox[i]).attr({'src':data[i].main_photo_substitute,'data-rsTmb':data[i].color,'data-title':data[i].title});
-						// 左側小圖載入
+						console.log('src',data[i].main_photo_substitute);
+						// Hover色塊對應到的大圖
 						var onMouseOver = "MM_swapImage('photo','','"+data[i].main_photo_substitute+"',0)";
 						$(colorBox[i]).attr({'src':data[i].color,'data-title':data[i].title,'onMouseOver':onMouseOver});
-
+						// 左側下方縮圖slider
+						$(slider[i]).attr({'src':data[i].main_photo_substitute});
 					}
-*/
 
+/*
 					//載入照片
 					photoBox.each(function(i,k){
 						$(k).attr({'src':data[i].main_photo_substitute,'data-rsTmb':data[i].color,'data-title':data[i].title});
@@ -209,8 +213,7 @@
 							$(m).attr({'src':data[r].color,'data-title':data[r].title,'onMouseOver':onMouseOver});
 						}
 					});
-
-					// 第一個的avalible size
+*/					// 第一個的avalible size
 						// 選取distinct size 當顏色 = 第一個顏色title/ prodcutrefid = product id
 						var title = $('.color-buttons li:first img').data('title');
 						$('.js-color').text(title); // 預設名稱為第一個的color
