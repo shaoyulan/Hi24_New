@@ -148,7 +148,8 @@
 			}else{
 			// ProductId 是參數
 			var productId = $productId,
-				detailId = '';
+				detailId = '',
+				$push = 'no';
 			}
 		}
 
