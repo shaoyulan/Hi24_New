@@ -12,7 +12,7 @@
 $in = [
 	'ht'=>'localhost',
 	'dn'=>'hi24_new',
-	'pt'=>'8889',
+	'pt'=>'3306',
 	'ct'=>'UTF8',
 	'un'=>'root',
 	'pd'=>'root',

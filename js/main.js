@@ -201,7 +201,7 @@
 					// 第一個的avalible size
 						// 選取distinct size 當顏色 = 第一個顏色title/ prodcutrefid = product id
 						var colortitle = $('.color-buttons li:first img').data('title');
-						$('.js-color').text(title); // 預設名稱為第一個的color
+						$('.js-color').text(colortitle); // 預設名稱為第一個的color
 						$.post('../crud/dataFiltered.php',{colorTitle:colortitle,productId:productId,mode:'get_size_avalible'},function(size,m,x){
 							$.each(size,function(key,value){
 								var size = value["size"];
@@ -211,7 +211,7 @@
 									// 選單第一個更新
 									$('.selectedValue').text(size);
 									// 順便修改id
-									$.post('../crud/dataFiltered.php',{colorTitle:title,size:size,mode:'get_id'},function(id,m,x){
+									$.post('../crud/dataFiltered.php',{colorTitle:colortitle,size:size,mode:'get_id'},function(id,m,x){
 										$('.js-id').text(id[0].item_id);
 									});
 								}
