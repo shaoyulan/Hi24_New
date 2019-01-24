@@ -184,8 +184,8 @@
 				$.post('../crud/dataFiltered.php',{id:productId,mode:'get_mainPhotos'},function(data,t,x){
 					var photoBox = $('.rsContainer .rsImg'),
 						colorBox = $('.color-buttons img'),
-						slider = $('.rsThumbsContainer img'),
-						colorLength = data.length;
+						slider = $('.rsThumbsContainer img');
+						// dataLength = data.length;
 
 					// 載入資料
 					for (var i = 0; i < data.length; i++) {
@@ -200,9 +200,9 @@
 
 					// 第一個的avalible size
 						// 選取distinct size 當顏色 = 第一個顏色title/ prodcutrefid = product id
-						var title = $('.color-buttons li:first img').data('title');
+						var colortitle = $('.color-buttons li:first img').data('title');
 						$('.js-color').text(title); // 預設名稱為第一個的color
-						$.post('../crud/dataFiltered.php',{colorTitle:title,productId:productId,mode:'get_size_avalible'},function(size,m,x){
+						$.post('../crud/dataFiltered.php',{colorTitle:colortitle,productId:productId,mode:'get_size_avalible'},function(size,m,x){
 							$.each(size,function(key,value){
 								var size = value["size"];
 								if(key==0){

@@ -178,7 +178,7 @@
 	<!-- Slider 大廣告
 	================================================== -->
 	<div class="wraper">
-		<div> <!-- Pages holder -->
+		<div class="newpage"> <!-- Pages holder -->
 
 		</div> 
 		
