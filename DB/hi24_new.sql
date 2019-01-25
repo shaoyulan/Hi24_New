@@ -2,8 +2,8 @@
 -- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Jan 21, 2019 at 11:17 PM
+-- Host: localhost:3307
+-- Generation Time: Jan 25, 2019 at 08:31 AM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -47,8 +47,7 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `memberid`, `orderdate`, `productid`, `detailid`, `itemName`, `price`, `size`, `color`, `qty`, `total`) VALUES
-(15, 0, '2019-01-19', 1, 0, '棉質條紋寬領長袖T恤-男', 379, '', '', 1, 379),
-(16, 0, '2019-01-21', 2, 0, '棉質條紋寬領長袖T恤-女', 299, '', '', 1, 299);
+(26, 0, '2019-01-25', 2, 5, '棉質條紋寬領長袖T恤-女', 299, 'S', '格紋米色', 1, 299);
 
 -- --------------------------------------------------------
 
@@ -96,15 +95,19 @@ CREATE TABLE `member` (
   `city` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `postcode` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `tel` varchar(45) COLLATE utf8_unicode_ci NOT NULL
+  `tel` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `shippingAddress` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `member`
 --
 
-INSERT INTO `member` (`id`, `country`, `username`, `password`, `firstname`, `lastname`, `addr`, `city`, `postcode`, `email`, `tel`) VALUES
-(1, '', 'shao', 'root', '', '', '', NULL, NULL, '', '');
+INSERT INTO `member` (`id`, `country`, `username`, `password`, `firstname`, `lastname`, `addr`, `city`, `postcode`, `email`, `tel`, `shippingAddress`) VALUES
+(1, '', '', 'root', '', '', '', NULL, NULL, '', '', NULL),
+(2, 'TW', '0908331236', '12', '藍', '與', '台中', '台中', '102', 'B101@gmail', '0908', 1),
+(3, 'TW', '123', '12', '藍', '與', '台中', '台中', '102', 'B101@gmail', '0908', 1),
+(4, 'TW', '0932595963', '123', '藍', '與', '台中', '台中', '102', 'B101@gmail', '0908', 1);
 
 -- --------------------------------------------------------
 
@@ -208,12 +211,12 @@ CREATE TABLE `product_list` (
 --
 
 INSERT INTO `product_list` (`id`, `active_stat`, `activity_text`, `img_url1`, `img_url2`, `title`, `price_org`, `price_dis`, `category_main`, `category_sub`, `discount`) VALUES
-(1, '', '', 'images/men/accessories/a001a-2.jpg', 'images/men/accessories/a001a-1.jpg', '棉質條紋寬領長袖T恤-男', '$379.00', '', 'men', '配件', 'product-price'),
-(2, '', '', 'images/women/accessories/a001a-2.jpg', 'images/women/accessories/a001a-1.jpg', '棉質條紋寬領長袖T恤-女', '$299.00', '', 'women', '配件', 'product-price'),
-(3, '', 'SALE', 'images/women/accessories/a002a-2.jpg', 'images/women/accessories/a002a-1.jpg', '棉質條紋寬領長袖T恤-女', '$499.00', '$399.00', 'women', '配件', 'product-price-discount'),
-(4, '', '', 'images/men/coat/ct001a-2.jpg', 'images/men/coat/ct001a-1.jpg', '棉質條紋寬領長袖T恤-男', '$999.00', '', 'kid', '外套', 'product-price'),
-(5, '', '', 'images/women/home&inside/h002a-2.jpg', 'images/women/home&inside/h002a-1.jpg', '棉質條紋寬領長袖T恤-女', '$999.00', '', 'men', '居家', 'product-price'),
-(6, '', '', 'images/women/shirt/s004a-2.jpg', 'images/women/shirt/s004a-1.jpg', '棉質條紋寬領長袖T恤-男', '$999.00', '', 'men', '外套', 'product-price'),
+(1, '', '', 'images/men/accessories/a001a-2.jpg', 'images/men/accessories/a001a-1.jpg', '棉質條紋寬領長袖T恤-男', '379', '', 'men', '配件', 'product-price'),
+(2, '', '', 'images/women/accessories/a001a-2.jpg', 'images/women/accessories/a001a-1.jpg', '棉質條紋寬領長袖T恤-女', '299', '', 'women', '配件', 'product-price'),
+(3, '', 'SALE', 'images/women/accessories/a002a-2.jpg', 'images/women/accessories/a002a-1.jpg', '棉質條紋寬領長袖T恤-女', '499', '399', 'women', '配件', 'product-price-discount'),
+(4, '', '', 'images/men/coat/ct001a-2.jpg', 'images/men/coat/ct001a-1.jpg', '棉質條紋寬領長袖T恤-男', '999', '', 'kid', '外套', 'product-price'),
+(5, '', '', 'images/women/home&inside/h002a-2.jpg', 'images/women/home&inside/h002a-1.jpg', '棉質條紋寬領長袖T恤-女', '999', '', 'men', '居家', 'product-price'),
+(6, '', '', 'images/women/shirt/s004a-2.jpg', 'images/women/shirt/s004a-1.jpg', '棉質條紋寬領長袖T恤-男', '999', '', 'men', '外套', 'product-price'),
 (7, '', '', 'images/women/coat/ct003a.jpg', 'images/women/coat/ct003a-3.jpg', '棉質條紋寬領長袖T恤-女', '290', '260', 'men', 'upper', ''),
 (8, '', '', 'images/women/sweater/sw004a.jpg', 'images/women/sweater/sw004a-1.jpg', '棉質條紋寬領長袖T恤-女', '290', '260', 'kid', 'upper', ''),
 (9, '', '', 'images/men/accessories/a001a.jpg\r\n', 'images/men/accessories/a001a-1.jpg', '棉質條紋寬領長袖T恤-女', '290', '260', 'men', 'upper', '');
@@ -272,7 +275,7 @@ ALTER TABLE `product_list`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `header_ad`
 --
@@ -282,7 +285,7 @@ ALTER TABLE `header_ad`
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `product_default_photos`
 --

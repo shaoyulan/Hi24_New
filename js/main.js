@@ -101,6 +101,7 @@
 	}
 
 	function index_setup(){
+
 		// 放置Bbanner廣告 place Banner carousel
 		place_data('#header-slider-template','#headerAdContainer',headerAds);
 		// 放置不分類商品place Content products -- Category ALL
@@ -457,9 +458,10 @@
 			// 被選商品品名
 			//itemName = itemBox.find('h5').text(),
 			// 被選商品productid
-			productid = itemBox.data('productid') || $('.button.adc').data('productid');
-/*			// 被選商品detailid
-			detailid = itemBox.data('detailid'),
+			productid = itemBox.data('productid') || $('.button.adc').data('productid'),
+			// 被選商品detailid
+			detailid = itemBox.data('detailid') || $('.js-id').text();
+/*
 			// 商品金額  Price; 折扣 discount || 沒有折扣 no discount
 			
 			price = itemBox.find('.js-disPrice').text().slice(1) || itemBox.find('.product-price').text().slice(1);
@@ -467,19 +469,19 @@
 		// 加入購物車/取消 buy or cancel 
 		var target = $(e.target).parent().next().find('section') || ''; // 加入購物車按鈕
 		var itemNuber = parseInt($('#cart-amount').text()); // 目前購物車商品數量
-		console.log('inumber0',itemRow);
 
 		// 依productid 取得商品資訊
 		$.post('../crud/dataFiltered.php',{productid:productid,mode:'product_detail'},function(data,m,x){
 			var itemName = data[0].title, // 被選商品品名
 				price = data[0].price_dis || data[0].price_org, // 商品金額  Price; 折扣 discount || 沒有折扣 no discount
-				size = $('selectedValue').text() || '',
+				size = $('.selectedValue').text() || '',
 				qty = $('input[name="quantity"]').val() || 1,
 				total = price*qty,
 				memberid = memberid || 0,
 				color = $('.color-buttons a.active img').data('title') || '', 
-				ate = time('today');	
+				date = time('today');	
 
+				console.log(price);
 			// 判斷是在哪個頁面 (首頁: 加入/取消 商品詳細頁:加入)
 				// 詳細頁hasClass('buy') 永遠回傳false故皆為加入 OK
 			// 被選的商品是要取消 或 加入
@@ -503,7 +505,10 @@
 				// renew total number
 				itemNuber += qty;
 				$('#cart-amount').text(itemNuber);
-				console.log('inumber',itemRow);
+				
+				// 空的購物車HTML　Empty Cart HTML  這裡重覆var之後刪
+				itemRow = $('#js-cartItem').clone();
+				
 				itemRow // 購物車放入新的商品
 					.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide')
 					// 修改標題
@@ -518,6 +523,7 @@
 
 					
 					// 更新購物車陣列
+					  // price 先做清理
 					cart.push({
 						memberid:memberid,
 						orderdate:date,
@@ -532,7 +538,7 @@
 					});
 
 					// 更新資料庫購物車
-					 // 
+
 					 var last = [];last.push(cart[cart.length-1])
 					$.post('../crud/create.php', {cart: last,mode:'add_cart'}, function(data, stextStatu, xhr) {
 						// console.log(data);
@@ -571,6 +577,160 @@
 	// 進入購物車
 	$('body').on('click','a[href="shopping/cart_list_box.html"]',function(e){
 		cart_list_box(e);
+	});
+
+
+	// login / Member section
+	$('.js-loginbtn').on('click',function(e){
+		e.preventDefault();
+		
+
+		// function Page_loader(e,$page_to_load,$after_load,$push='yes',$info){
+
+		Page_loader(e,"../member/login_register.php",function(e){
+
+			
+			// login verify
+			$('#login_register').on('click','.js-login',function(e){
+				var username = $('.js-account').val().trim(), password = $('.js-password').val().trim();
+				console.log('ps'+password+'us'+username);
+				$.ajax({
+					type:'POST', //必填
+					url:'../crud/meberVerify.php',
+					dataType:'json',
+					data:{username: username,password:password},
+					success:function(data, textStatus, xhr){
+// 
+						if (data.verify == '錯誤的帳號或密碼'){
+							$('.js-loginbtn').html('<span style="color:red">'+data.verify+'!</span>');
+						}else{
+							//設定內存username
+							sessionStorage.setItem('username',username);
+							
+							//提示登入成功、導回首頁
+							var info = $('<span style="color:red" class="info">親愛的'+data.verify+'您好!</span>');
+							$('.js-lognintab')
+								.prepend(info)
+								.delay(500).animate({opacity:'0'},400,function(e){
+									$('.js-lognintab .info').text('將帶您回到首頁').parent().animate({opacity:'1'},400);
+								});
+							var goindex = setTimeout(function(){window.location.href='index.php';},2000);
+						}
+					},
+					error:function(data, textStatus, xhr){
+						console.log('smsAPI呼叫失敗'+xhr)
+					},
+				});
+
+			}); //NOF login verify
+
+
+			// Member register 
+
+		// 定義函式內的通用變數
+		
+		$('#login_register').on('click','.js-registbtn',function(e){
+			e.preventDefault();
+			// e.stopPropagation();
+			 	phone_number = $('.js-registphone').val(),
+				password = $('.js-registpassword').val(),
+				checkpassword = $('.js-checkpassword').val();
+				console.log('phone',phone_number);
+				console.log('password',password);
+			// Page_loader(e,"../member/login_register2.php");
+			// 確認密碼一致
+			if(checkpassword != password){
+				// 是否已有訊息 否則顯示
+				if(!$('login-info')){
+					var info =$('<span style="color:red" class="login-info">密碼輸入不同!</span>');
+					$('.js-regist').append(info);
+				}
+			}else{
+				// 產生亂數
+				var verify_num="";
+				for (var i = 1; i <= 4; i++) {
+					verify_num += String(Math.floor((Math.random()*10)));
+				}
+				console.log('驗證碼'+verify_num);
+				// 呼叫SMS API
+				$.ajax({
+					type:'POST', //必填
+					url:'../SMS API/sms_api2.php',
+					dataType:'json',
+					data:{phone_number:phone_number,verify_num:verify_num},
+					success:function(data, textStatus, xhr){
+						$('.login_register h3:eq(0)').text('簡訊API呼叫成功：餘額'+data.balance+'元')
+						// console.log();
+					},
+					error:function(data, textStatus, xhr){
+						console.log('smsAPI呼叫失敗'+xhr)
+					},
+				});
+
+				$('.js-regist .headline').text('請輸入您手機收到的驗證碼');
+				// 驗整碼輸入框
+				var inputarea = 
+				'<p class="form-row form-row-wide">'+
+					'<label for="reg_email">驗證碼： <span class="required">*</span></label>'+
+					'<input type="text" class="input-text js-smscode" placeholder="輸入驗證碼" value="" />'+
+				'</p>'+
+				'<p class="form-row">'+
+					'<input type="button" class="button js-sendsmscode" value="送出" />'+
+				'</p>';
+				// 轉場出現
+				$('.js-regist form').animate({opacity:0},400,function(e){
+					$(this).html(inputarea).animate({opacity:1});
+				});
+			}
+
+			//使用者點擊送出簡訊驗證碼
+			$('#login_register').on('click','.js-sendsmscode',function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				//取得使用者輸入
+				var user_input = $('.js-smscode').val();
+				if(user_input == verify_num){
+					Page_loader(e,"../member/information.php #js-information",function(e){
+						//使用者填寫資訊
+
+						$('#js-information').on('click','.js-informationbtn',function(e){
+							console.log('jsinformation');
+							e.preventDefault();
+							e.stopPropagation();
+
+							console.log(password);
+							console.log(phone_number);
+							// 取得填寫資訊
+							var memberinfo = $('.information-panel').serializeArray();
+							memberinfo.push({'name':'password','value':password},{'name':'username','value':phone_number});
+							// 解碼 (若使用serialize方法)
+							// memberinfo = decodeURIComponent(memberinfo,true);
+							console.log(memberinfo);
+							
+							$.ajax({
+								type:'POST', //必填
+								url:'../crud/meberRegister.php',
+								dataType:'json',
+								data:{memberinfo:memberinfo},
+								success:function(data, textStatus, xhr){
+									console.log('data'+data);
+									// alert('註冊成功');
+									// 設定內存username
+									sessionStorage.setItem('username',phone_number);
+									// 導向回首頁
+									// setTimeout(function(){window.location.href='index.php';},2000);
+								},
+								error:function(data, textStatus, xhr){
+									console.log('失敗'+xhr)
+								},
+							}); 
+						});
+					},'yes');
+				}
+			});
+		}); //end-of-member-register
+
+		});
 	});
 });
 

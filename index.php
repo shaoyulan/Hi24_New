@@ -55,7 +55,7 @@
 			<div id="additional-menu">
 				<ul>
 					<li><a href="#">訂單查詢 │ 登出</a></li><!--會員登入後改為-->
-					<li><a href="member/login_register.html">登入 │ 註冊</a></li>
+					<li class="js-loginbtn"><a href="member/login_register.html">登入 │ 註冊</a></li>
 				</ul>
 			</div>
 		</div>
