@@ -1,3 +1,8 @@
+/*general*/
+#additional-menu .hidden{
+	display: none;
+}
+
 /*shopping cart*/
 #productList section.buy{
 	background: lightgoldenrodyellow;

@@ -25,10 +25,26 @@ foreach ($_POST['memberinfo'] as $key => $value) {
 
 $result = $statement->execute();
 
-if($result){
-	echo json_encode(['result' => '註冊成功']);
+
+$sql = 'SELECT `id`, `firstname`, `lastname` FROM `member` WHERE `country`=:country AND `username`=:username AND `password`=:password AND `firstname`=:firstname AND `lastname`=:lastname AND `addr`=:addr AND `city`=:city AND `postcode`=:postcode AND `email`=:email AND `tel`=:tel AND `shippingAddress`=:shippingAddress';
+
+// $sql = 'SELECT `id` FROM `member` WHERE `username`=:username';
+$statement = $pdo->prepare($sql);
+foreach ($_POST['memberinfo'] as $key => $value) {
+	// if($value['name'] == 'username')
+	$str = $value['name'];
+	$result= $statement->bindValue($str,$value['value']);
+}
+
+$result_id = $statement->execute();
+$userid = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+if($result && $result_id){
+	echo json_encode(['result' => $userid]);
 }else{
-	echo json_encode(['result' => '註冊失敗']);
+	echo json_encode(['result' => $userid]);
 }
 
 

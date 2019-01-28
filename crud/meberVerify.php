@@ -12,21 +12,25 @@ try{
 }
 
 // command SQL 
-$sql ='SELECT password FROM `member` where username=:name';
+$sql ='SELECT `password`, `id`, `firstname`, `lastname` FROM `member` where username=:name';
 $statement = $pdo->prepare($sql);
 $statement->bindValue(':name',$_POST['username']);
 $statement->execute();
-$password = $statement->fetchAll(PDO::FETCH_ASSOC); 
+$user = $statement->fetchAll(PDO::FETCH_ASSOC); 
+
+
 $password = $password[0]['password'];
 // echo $password;
 // echo $_POST['username'];
 // echo 'ps'.$_POST['password'];
  // and $_POST['password']<>'' and $_POST['name']<>'' 
-$verify = '錯誤的帳號或密碼';
+$data = '錯誤的帳號或密碼';
 if ($password == $_POST['password']  and $_POST['username']!=""){
-	 $verify = $_POST['username'];	 
+	 $data = $user;	 
 }
 
-echo json_encode(['verify' => $verify]);
+echo json_encode(['response' => $user]);
+// $user 格式:
+// {password:'root',id:'1',firstname:'',lastname:''}
 
 ?>

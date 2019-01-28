@@ -53,9 +53,7 @@ if ($_POST['mode']=='2'){
 	$statement->bindValue(':size',$_POST['size']);
 
 }elseif ($_POST['mode']=='get_cart') {
-	$sql ='SELECT * FROM `cart` WHERE `memberid`=:mem
-
-	berid';
+	$sql ='SELECT * FROM `cart` WHERE `memberid`=:memberid';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':memberid',$_POST['memberid']);
 }else{

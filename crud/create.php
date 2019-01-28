@@ -11,10 +11,36 @@ try{
 	exit;
 }
 
-// 單一條件，或多重條件
+// 新增至購物車
 if ($_POST['mode']=='add_cart'){
 	// command SQL 
 	$cart = $_POST['cart'];
+	// 判斷是要更新 或 新增
+	try{
+		$sql = 'SELECT `qty` FROM `cart` WHERE `productid`=:productid AND `detailid`=:detailid';
+		$statement = $pdo->prepare($sql);
+		$statement->bindValue(':productid',$cart[2]["productid"]);
+		$statement->bindValue(':detailid',$cart[3]["detailid"]);
+		$statement->execute();
+		$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+		// echo $result; 
+
+		if($result){
+			//需要更新數量
+			// $sql = 'UPDATE `cart` SET `qty`=:new_qty WHERE `productid`=:productid AND `detailid`=:detailid';
+			// $statement = $pdo->prepare($sql);
+			// $statement->bindValue(':qty',$cart[2]["productid"]);
+			// $statement->bindValue(':productid',$cart[2]["productid"]);
+			// $statement->bindValue(':detailid',$cart[3]["detailid"]);
+			// $statement->execute();
+
+		}else{
+			// 需新增
+		}
+
+	}catch(PDOException $e){
+		print "ERROR".$e->getMessage();
+	}
 
 	for ($i=0; $i <count($cart) ; $i++) { 
 		try{
@@ -31,7 +57,7 @@ if ($_POST['mode']=='add_cart'){
 			$statement->bindValue(':qty',$cart[$i]["qty"]);
 			$statement->bindValue(':total',$cart[$i]["total"]); 
 
-			$result = $statement->execute();
+			$statement->execute();
 		}catch (PDOException $e){
 			print "ERROR".$e->getMessage();
 		}
@@ -42,7 +68,7 @@ if ($_POST['mode']=='add_cart'){
 // $statement->execute();
 // $data_filtered = $statement->fetchAll(PDO::FETCH_ASSOC);
 if($result){
-	echo json_encode('success');
+	echo json_encode($result);
 } 
 // echo json_encode($data_filtered,JSON_NUMERIC_CHECK);
 

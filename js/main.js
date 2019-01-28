@@ -3,16 +3,17 @@
 	cart = [];
 	index_setup();
 
-	renewCart(0);
+	
 	// 使用者是否存在
 	function check_userExist(){
 
 		if(sessionStorage.getItem('username')){
-			return sessionStorage.getItem('username');
-			// 修改登入區顯示大名
+			var user = [];
+			user['username'] = (sessionStorage.getItem('username'));
+			user['userid'] = (sessionStorage.getItem('userid'));
 
-			// 顯示購物車資訊
-
+			// 返回使用者姓名
+			return user;
 
 		}else{
 			return false;
@@ -298,6 +299,7 @@
 		$.post('../crud/dataFiltered.php', {memberid:$memberid,mode:'get_cart'}, function($cart, textStatus, xhr) {
 			// 修改全域
 			cart = $cart;
+			console.log('mid',$memberid);
 			//DB購物車有東西
 			if(cart.length > 0){
 				var cartInfo = $('.js-cartInfo'),
@@ -348,7 +350,7 @@
 	}
 
 	// 購物車頁面
-	function cart_list_box(e){
+	function cart_list_box(e,$userid){
 		if(e){
 			e.preventDefault();
 			e.stopPropagation();
@@ -359,7 +361,7 @@
 		Page_loader(e,"../shopping/cart_list_box.php",function(e){
 
 			// 從資料庫抓購物車 / 也可直接從全域cart
-			$.post('../crud/dataFiltered.php', {memberid:0,mode:'get_cart'}, function($cart, textStatus, xhr) {
+			$.post('../crud/dataFiltered.php', {memberid:$userid,mode:'get_cart'}, function($cart, textStatus, xhr) {
 				// 取得購物清單(:not 範本)
 				$.each($cart,function(key,item){
 					// 貨幣格式化
@@ -427,21 +429,31 @@
 
 	// 網站初始載入，使用者是否存在
 	if(check_userExist()){
-		username = check_userExist();
-		$('.right .login').html("<span style='color:red'>"+username+"您好!</span>");
-	}
+		var user = check_userExist();
+		$('.js-loginbtn').html("<span style='color:red'>"+user['username']+"您好!</span>");
+
+		//顯示購物車資訊
+		renewCart(user['userid']);
+		$('.js-loginbtn').on('mouseenter',function(e){
+			$('.js-loginbtn').css({'display':'none'});
+			$('.js-logoutbtn').toggleClass('hidden');
+		});
+	};
+
 
 	// Cart number counter
 	$('#wrapper').on('click','.product-button, .button.adc',function(e){
 		e.preventDefault();
 		e.stopPropagation();
 
-		/* 加入會員才能使用購物車
+		 //加入會員才能使用購物車
 		if(!check_userExist()){
-			console.log('test');
+			alert('請登入會員');
 			return false;
+		}else{
+			userid = sessionStorage.getItem('userid'); 
 		}
-		*/
+		
 
 		// 空購物車顯示訊息
 		var cartInfo = $('.js-cartInfo'),
@@ -477,7 +489,7 @@
 				size = $('.selectedValue').text() || '',
 				qty = $('input[name="quantity"]').val() || 1,
 				total = price*qty,
-				memberid = memberid || 0,
+				memberid = userid,
 				color = $('.color-buttons a.active img').data('title') || '', 
 				date = time('today');	
 
@@ -576,7 +588,16 @@
 
 	// 進入購物車
 	$('body').on('click','a[href="shopping/cart_list_box.html"]',function(e){
-		cart_list_box(e);
+		 //加入會員才能使用購物車
+		if(!check_userExist()){
+			e.preventDefault();
+			alert('請登入會員');
+			return false;
+		}else{
+			userid = sessionStorage.getItem('userid');
+			cart_list_box(e,userid); 
+		}
+		
 	});
 
 
@@ -600,15 +621,19 @@
 					dataType:'json',
 					data:{username: username,password:password},
 					success:function(data, textStatus, xhr){
-// 
-						if (data.verify == '錯誤的帳號或密碼'){
-							$('.js-loginbtn').html('<span style="color:red">'+data.verify+'!</span>');
+// 	`					
+						console.log('kk',data);
+						if (data.response == '錯誤的帳號或密碼'){
+							$('.js-loginbtn').html('<span style="color:red">'+data.response[0]+'!</span>');
 						}else{
 							//設定內存username
-							sessionStorage.setItem('username',username);
-							
+
+							// 更新購物車
 							//提示登入成功、導回首頁
-							var info = $('<span style="color:red" class="info">親愛的'+data.verify+'您好!</span>');
+							var username = data.response[0].lastname + data.response[0].firstname
+							sessionStorage.setItem('username',username);
+							sessionStorage.setItem('userid',data.response[0].id);
+							var info = $('<span style="color:red" class="info">親愛的'+username+'您好!</span>');
 							$('.js-lognintab')
 								.prepend(info)
 								.delay(500).animate({opacity:'0'},400,function(e){
@@ -692,6 +717,7 @@
 				if(user_input == verify_num){
 					Page_loader(e,"../member/information.php #js-information",function(e){
 						//使用者填寫資訊
+						$('input[name="tel"]').val(phone_number);
 
 						$('#js-information').on('click','.js-informationbtn',function(e){
 							console.log('jsinformation');
@@ -705,20 +731,30 @@
 							memberinfo.push({'name':'password','value':password},{'name':'username','value':phone_number});
 							// 解碼 (若使用serialize方法)
 							// memberinfo = decodeURIComponent(memberinfo,true);
-							console.log(memberinfo);
 							
 							$.ajax({
 								type:'POST', //必填
 								url:'../crud/meberRegister.php',
 								dataType:'json',
 								data:{memberinfo:memberinfo},
-								success:function(data, textStatus, xhr){
-									console.log('data'+data);
+								success:function(userid, textStatus, xhr){
+									//  userid 格式：
+									// {result:[{id:'24'}]}
+									console.log('userid',userid);
 									// alert('註冊成功');
+
 									// 設定內存username
-									sessionStorage.setItem('username',phone_number);
+									sessionStorage.setItem('useraccount',phone_number);
+									sessionStorage.setItem('userid',userid.result[0].id);
+									var username = userid.result[0].lastname+userid.result[0].firstname;
+									sessionStorage.setItem('username',username);
+									// 存入sesstion後資料會被"先"用tostring轉成字串，
+									// 如果是存入Object，則只會存入"字面直"[object object]
+									// 故要存object 需先轉字串JSON.stringify，getItem後再JSON.parse
+									// 參考：https://ithelp.ithome.com.tw/articles/10195522
+									
 									// 導向回首頁
-									// setTimeout(function(){window.location.href='index.php';},2000);
+									setTimeout(function(){window.location.href='index.php';},2000);
 								},
 								error:function(data, textStatus, xhr){
 									console.log('失敗'+xhr)
@@ -735,3 +771,5 @@
 });
 
 // 購物車頁面加上大小選項
+
+
