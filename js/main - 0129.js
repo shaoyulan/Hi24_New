@@ -3,16 +3,17 @@
 	cart = [];
 	index_setup();
 
-	renewCart(0);
+	
 	// 使用者是否存在
 	function check_userExist(){
 
 		if(sessionStorage.getItem('username')){
-			return sessionStorage.getItem('username');
-			// 修改登入區顯示大名
+			var user = [];
+			user['username'] = (sessionStorage.getItem('username'));
+			user['userid'] = (sessionStorage.getItem('userid'));
 
-			// 顯示購物車資訊
-
+			// 返回使用者姓名
+			return user;
 
 		}else{
 			return false;
@@ -101,6 +102,7 @@
 	}
 
 	function index_setup(){
+
 		// 放置Bbanner廣告 place Banner carousel
 		place_data('#header-slider-template','#headerAdContainer',headerAds);
 		// 放置不分類商品place Content products -- Category ALL
@@ -148,7 +150,8 @@
 			}else{
 			// ProductId 是參數
 			var productId = $productId,
-				detailId = '';
+				detailId = '',
+				$push = 'no';
 			}
 		}
 
@@ -164,7 +167,7 @@
 
 				// Do after_load
 				//**************IMPORTANT : Propagation !!******************
-				$('.title-section').data('productid',productId);
+				$('.title-section, .button.adc').data('productid',productId);
 				$('.title-section').find('.title').text(title);
 				$('.js-maincat-ch').text(Category_translate(mainCat));
 				$('.js-maincat-en').text(mainCat); 
@@ -183,8 +186,8 @@
 				$.post('../crud/dataFiltered.php',{id:productId,mode:'get_mainPhotos'},function(data,t,x){
 					var photoBox = $('.rsContainer .rsImg'),
 						colorBox = $('.color-buttons img'),
-						slider = $('.rsThumbsContainer img'),
-						colorLength = data.length;
+						slider = $('.rsThumbsContainer img');
+						// dataLength = data.length;
 
 					// 載入資料
 					for (var i = 0; i < data.length; i++) {
@@ -197,26 +200,11 @@
 						$(slider[i]).attr({'src':data[i].main_photo_substitute});
 					}
 
-/*
-					//載入照片
-					photoBox.each(function(i,k){
-						$(k).attr({'src':data[i].main_photo_substitute,'data-rsTmb':data[i].color,'data-title':data[i].title});
-					});
-					
-					// 載入色塊
-					colorBox.each(function(r,m){
-						// 資料數量必須大於 目前索引編號
-						if(r<data.length){
-							// onMouseOver 
-							var onMouseOver = "MM_swapImage('photo','','"+data[r].main_photo_substitute+"',0)";
-							$(m).attr({'src':data[r].color,'data-title':data[r].title,'onMouseOver':onMouseOver});
-						}
-					});
-*/					// 第一個的avalible size
+					// 第一個的avalible size
 						// 選取distinct size 當顏色 = 第一個顏色title/ prodcutrefid = product id
-						var title = $('.color-buttons li:first img').data('title');
-						$('.js-color').text(title); // 預設名稱為第一個的color
-						$.post('../crud/dataFiltered.php',{colorTitle:title,productId:productId,mode:'get_size_avalible'},function(size,m,x){
+						var colortitle = $('.color-buttons li:first img').data('title');
+						$('.js-color').text(colortitle); // 預設名稱為第一個的color
+						$.post('../crud/dataFiltered.php',{colorTitle:colortitle,productId:productId,mode:'get_size_avalible'},function(size,m,x){
 							$.each(size,function(key,value){
 								var size = value["size"];
 								if(key==0){
@@ -225,7 +213,7 @@
 									// 選單第一個更新
 									$('.selectedValue').text(size);
 									// 順便修改id
-									$.post('../crud/dataFiltered.php',{colorTitle:title,size:size,mode:'get_id'},function(id,m,x){
+									$.post('../crud/dataFiltered.php',{colorTitle:colortitle,size:size,mode:'get_id'},function(id,m,x){
 										$('.js-id').text(id[0].item_id);
 									});
 								}
@@ -311,6 +299,13 @@
 		$.post('../crud/dataFiltered.php', {memberid:$memberid,mode:'get_cart'}, function($cart, textStatus, xhr) {
 			// 修改全域
 			cart = $cart;
+			console.log('cart',cart);
+
+			// 先清空殘留的商品、價格
+			$('.js-cartItem:not(#js-cartItem)').remove(); //殘留商品
+			$('.cart-btn a span').text('$0.00'); //紅區 價格
+			$('#cart-amount').text(0); //灰區 價格
+
 			//DB購物車有東西
 			if(cart.length > 0){
 				var cartInfo = $('.js-cartInfo'),
@@ -318,9 +313,12 @@
 					itemCount = 0, 
 					// 購物車現有金額 fetch current Cart total
 					currentP = 0;
+
 				
+
 				$.each(cart,function(index, item) {
-					//拿空範本
+
+					// 拿空範本
 					var itemRow = $('#js-cartItem').clone(),
 						// 購物車的最後一筆 Last item in cart
 						lastItem = $('.js-cartItem:last');
@@ -361,7 +359,7 @@
 	}
 
 	// 購物車頁面
-	function cart_list_box(e){
+	function cart_list_box(e,$userid){
 		if(e){
 			e.preventDefault();
 			e.stopPropagation();
@@ -372,7 +370,7 @@
 		Page_loader(e,"../shopping/cart_list_box.php",function(e){
 
 			// 從資料庫抓購物車 / 也可直接從全域cart
-			$.post('../crud/dataFiltered.php', {memberid:0,mode:'get_cart'}, function($cart, textStatus, xhr) {
+			$.post('../crud/dataFiltered.php', {memberid:$userid,mode:'get_cart'}, function($cart, textStatus, xhr) {
 				// 取得購物清單(:not 範本)
 				$.each($cart,function(key,item){
 					// 貨幣格式化
@@ -440,21 +438,46 @@
 
 	// 網站初始載入，使用者是否存在
 	if(check_userExist()){
-		username = check_userExist();
-		$('.right .login').html("<span style='color:red'>"+username+"您好!</span>");
-	}
+		var user = check_userExist(),
+			login = $('.js-loginbtn'),
+			logout =$('.js-logoutbtn');
+
+		$('.js-loginbtn').html("<span style='color:red'>"+user['username']+"您好!</span>");
+
+		//顯示購物車資訊
+		renewCart(user['userid']);
+		$('.js-loginbtn').on('mouseenter',function(e){
+			// 先判斷logout是隱藏的，再做動作
+			if(logout.is('.hidden')){
+				login.css({'display':'none'});
+				logout.toggleClass('hidden');
+			}
+		});
+
+		$('.js-logoutbtn').on('mouseout',function(e){
+			// 先判斷login是隱藏的，再做動作
+			if(login.css('display') == 'none'){
+				logout.toggleClass('hidden');
+				login.css({'display':'block'});
+			}
+			
+		});
+	};
+
 
 	// Cart number counter
-	$('#wrapper').on('click','.product-button',function(e){
+	$('#wrapper').on('click','.product-button, .button.adc',function(e){
 		e.preventDefault();
 		e.stopPropagation();
 
-		/* 加入會員才能使用購物車
+		 //加入會員才能使用購物車
 		if(!check_userExist()){
-			console.log('test');
+			alert('請登入會員');
 			return false;
+		}else{
+			userid = sessionStorage.getItem('userid'); 
 		}
-		*/
+		
 
 		// 空購物車顯示訊息
 		var cartInfo = $('.js-cartInfo'),
@@ -467,94 +490,129 @@
 			// 購物車現有金額 fetch current Cart total
 			currentP = parseInt($('.cart-btn a span').text().slice(1)),
 			// 被點擊的商品 Clicked Item Box
-			itemBox = $(e.target).closest('.js-itemBox');
+			itemBox = $(e.target).closest('.js-itemBox') || '';
 			// 被選商品品名
-			itemName = itemBox.find('h5').text(),
+			//itemName = itemBox.find('h5').text(),
 			// 被選商品productid
-			productid = itemBox.data('productid'),
+			productid = itemBox.data('productid') || $('.button.adc').data('productid'),
 			// 被選商品detailid
-			detailid = itemBox.data('detailid'),
+			detailid = itemBox.data('detailid') || $('.js-id').text();
+/*
 			// 商品金額  Price; 折扣 discount || 沒有折扣 no discount
+			
 			price = itemBox.find('.js-disPrice').text().slice(1) || itemBox.find('.product-price').text().slice(1);
-
-		
+*/
 		// 加入購物車/取消 buy or cancel 
-		var target = $(e.target).parent().next().find('section'); // 加入購物車按鈕
+		var target = $(e.target).parent().next().find('section') || ''; // 加入購物車按鈕
 		var itemNuber = parseInt($('#cart-amount').text()); // 目前購物車商品數量
 
-		// 被選的商品是要取消 或 加入
-		if(target.hasClass('buy')){
-		//取消
-			// renew total number
-			$('#cart-amount').text(--itemNuber);
-			// cancel order so price -price
-			price = -price;
-			// 依productid detailid 取得購物車內的目標
-			var criteria = '.js-cartItem[data-productid="'+productid+'"]';
-				criteria += '[data-detailid="'+detailid+'"]';
-			var itemRow = $(criteria);
-			// 刪除cart array 對應
-			cart.splice([itemRow.data('no')],1);
-			// 刪除該筆item row
-			itemRow.remove();
+		// 依productid 取得商品資訊
+		$.post('../crud/dataFiltered.php',{productid:productid,mode:'product_detail'},function(data,m,x){
+			var itemName = data[0].title, // 被選商品品名
+				price = data[0].price_dis || data[0].price_org, // 商品金額  Price; 折扣 discount || 沒有折扣 no discount
+				size = $('.selectedValue').text() || '',
+				qty = $('input[name="quantity"]').val() || 1,
+				total = price*qty,
+				memberid = userid,
+				color = $('.color-buttons a.active img').data('title') || '', 
+				date = time('today');	
 
-		}else{
-		//加入
-			// renew total number
-			$('#cart-amount').text(++itemNuber);
-			
-			itemRow // 購物車放入新的商品
-				.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide')
-				// 修改標題
-				.find('.js-itemTitle').text(itemName)
-			  	// 修改金額
-			  	.end()
-			  	.find('.js-itemPrice').text(price)
-			  	// 加上productid、detailid
-			  	.end() 
-			  	//data-no 用於對應cart 陣列排序
-				.attr({'data-productid':productid,'data-detailid':detailid,'data-no':(itemCount-1)});
+				console.log(price);
+			// 判斷是在哪個頁面 (首頁: 加入/取消 商品詳細頁:加入)
+				// 詳細頁hasClass('buy') 永遠回傳false故皆為加入 OK
+			// 被選的商品是要取消 或 加入
+			if(target.hasClass('buy')){
+			//取消
 
-				var size = size || '', qty =qty || 1, total = price*qty, memberid = memberid || 0,
-					color = color || '', date = time('today');
-				// 更新購物車陣列
-				cart.push({
-					memberid:memberid,
-					orderdate:date,
-					productid:productid,
-					detailid:detailid,
-					itemName:itemName,
-					price:price,
-					size:size,
-					color:color,
-					qty:qty,
-					total:total
+				//20190129 註記: 新流程
+				// 呼叫Delet api 刪除商品
+				$.post('../crud/delete.php',{productid:productid,detailid:detailid},function(result,m,x){
+					console.log(result);
+
+					// 刪除商品後，更新購物車
+					renewCart(sessionStorage.getItem('userid'));
 				});
+				// 呼叫更新購物車func
+/*
+				// renew total number  註記: 舊流程
+				$('#cart-amount').text(--itemNuber);
+				// cancel order so price -price
+				price = -price;
+				// 依productid detailid 取得購物車內的目標
+				var criteria = '.js-cartItem[data-productid="'+productid+'"]';
+					criteria += '[data-detailid="'+detailid+'"]';
+				var itemRow = $(criteria);
+*/
+				// 刪除cart array 對應
+				// cart.splice([itemRow.data('no')],1);
+				// 刪除該筆item row
+				// itemRow.remove();
 
-				// 更新資料庫購物車
-				 // 
-				 var last = [];last.push(cart[cart.length-1])
-				$.post('../crud/create.php', {cart: last,mode:'add_cart'}, function(data, stextStatu, xhr) {
-					// console.log(data);
-				});
-		}
-		
+			}else{
+			//加入
+				// renew total number
+				itemNuber += qty;
+				$('#cart-amount').text(itemNuber);
+				
+				// 空的購物車HTML　Empty Cart HTML  這裡重覆var之後刪
+				itemRow = $('#js-cartItem').clone();
+				
+				itemRow // 購物車放入新的商品
+					.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide')
+					// 修改標題
+					.find('.js-itemTitle').text(itemName)
+				  	// 修改金額
+				  	.end()
+				  	.find('.js-itemPrice').text(price)
+				  	// 加上productid、detailid
+				  	.end() 
+				  	//data-no 用於對應cart 陣列排序
+					.attr({'data-productid':productid,'data-detailid':detailid,'data-no':(itemCount-1)});
 
-		// set btn to yellow bgc
-		target.stop().toggleClass('buy');
+					
+					// 更新購物車陣列
+					  // price 先做清理
+					cart.push({
+						memberid:memberid,
+						orderdate:date,
+						productid:productid,
+						detailid:detailid,
+						itemName:itemName,
+						price:price,
+						size:size,
+						color:color,
+						qty:qty,
+						total:total
+					});
 
-		// 更新最新總價renew total price
-		var newPrice = parseInt(price)+currentP;
-		$('.cart-btn a span').text('$'+newPrice+'元');
+					// 更新資料庫購物車
 
-		// 變更訊息 顯示/隱藏
-		if(itemCount ==1){ //只有template時
-			cartInfo.addClass('hide');
-		}else if(itemCount >=2){
-			if(!cartInfo.hasClass('hide')){
-				cartInfo.toggleClass('hide');
+					 var last = [];last.push(cart[cart.length-1])
+					$.post('../crud/create.php', {cart: last,mode:'add_cart'}, function(data, stextStatu, xhr) {
+						// console.log(data);
+					});
 			}
-		}
+			
+
+			// set btn to yellow bgc
+			if(target){
+				target.stop().toggleClass('buy');
+			}
+
+			// 更新最新總價renew total price
+			var newPrice = parseInt(price)+currentP;
+			$('.cart-btn a span').text('$'+newPrice+'元');
+
+			// 變更訊息 顯示/隱藏
+			if(itemCount ==1){ //只有template時
+				cartInfo.addClass('hide');
+			}else if(itemCount >=2){
+				if(!cartInfo.hasClass('hide')){
+					cartInfo.toggleClass('hide');
+				}
+			}
+
+		});
 	});
 
 
@@ -566,8 +624,188 @@
 
 	// 進入購物車
 	$('body').on('click','a[href="shopping/cart_list_box.html"]',function(e){
-		cart_list_box(e);
+		 //加入會員才能使用購物車
+		if(!check_userExist()){
+			e.preventDefault();
+			alert('請登入會員');
+			return false;
+		}else{
+			userid = sessionStorage.getItem('userid');
+			cart_list_box(e,userid); 
+		}
+		
+	});
+
+
+	// login / Member section
+	$('.js-loginbtn').on('click',function(e){
+		e.preventDefault();
+		
+
+		// function Page_loader(e,$page_to_load,$after_load,$push='yes',$info){
+
+		Page_loader(e,"../member/login_register.php",function(e){
+
+			
+			// login verify
+			$('#login_register').on('click','.js-login',function(e){
+				var username = $('.js-account').val().trim(), password = $('.js-password').val().trim();
+				console.log('ps'+password+'us'+username);
+				$.ajax({
+					type:'POST', //必填
+					url:'../crud/meberVerify.php',
+					dataType:'json',
+					data:{username: username,password:password},
+					success:function(data, textStatus, xhr){
+// 	`					
+						console.log('kk',data);
+						if (data.response == '錯誤的帳號或密碼'){
+							$('.js-loginbtn').html('<span style="color:red">'+data.response[0]+'!</span>');
+						}else{
+							//設定內存username
+
+							// 更新購物車
+							//提示登入成功、導回首頁
+							var username = data.response[0].lastname + data.response[0].firstname
+							sessionStorage.setItem('username',username);
+							sessionStorage.setItem('userid',data.response[0].id);
+							var info = $('<span style="color:red" class="info">親愛的'+username+'您好!</span>');
+							$('.js-lognintab')
+								.prepend(info)
+								.delay(500).animate({opacity:'0'},400,function(e){
+									$('.js-lognintab .info').text('將帶您回到首頁').parent().animate({opacity:'1'},400);
+								});
+							var goindex = setTimeout(function(){window.location.href='index.php';},2000);
+						}
+					},
+					error:function(data, textStatus, xhr){
+						console.log('smsAPI呼叫失敗'+xhr)
+					},
+				});
+
+			}); //NOF login verify
+
+
+			// Member register 
+
+		// 定義函式內的通用變數
+		
+		$('#login_register').on('click','.js-registbtn',function(e){
+			e.preventDefault();
+			// e.stopPropagation();
+			 	phone_number = $('.js-registphone').val(),
+				password = $('.js-registpassword').val(),
+				checkpassword = $('.js-checkpassword').val();
+				console.log('phone',phone_number);
+				console.log('password',password);
+			// Page_loader(e,"../member/login_register2.php");
+			// 確認密碼一致
+			if(checkpassword != password){
+				// 是否已有訊息 否則顯示
+				if(!$('login-info')){
+					var info =$('<span style="color:red" class="login-info">密碼輸入不同!</span>');
+					$('.js-regist').append(info);
+				}
+			}else{
+				// 產生亂數
+				var verify_num="";
+				for (var i = 1; i <= 4; i++) {
+					verify_num += String(Math.floor((Math.random()*10)));
+				}
+				console.log('驗證碼'+verify_num);
+				// 呼叫SMS API
+				$.ajax({
+					type:'POST', //必填
+					url:'../SMS API/sms_api2.php',
+					dataType:'json',
+					data:{phone_number:phone_number,verify_num:verify_num},
+					success:function(data, textStatus, xhr){
+						$('.login_register h3:eq(0)').text('簡訊API呼叫成功：餘額'+data.balance+'元')
+						// console.log();
+					},
+					error:function(data, textStatus, xhr){
+						console.log('smsAPI呼叫失敗'+xhr)
+					},
+				});
+
+				$('.js-regist .headline').text('請輸入您手機收到的驗證碼');
+				// 驗整碼輸入框
+				var inputarea = 
+				'<p class="form-row form-row-wide">'+
+					'<label for="reg_email">驗證碼： <span class="required">*</span></label>'+
+					'<input type="text" class="input-text js-smscode" placeholder="輸入驗證碼" value="" />'+
+				'</p>'+
+				'<p class="form-row">'+
+					'<input type="button" class="button js-sendsmscode" value="送出" />'+
+				'</p>';
+				// 轉場出現
+				$('.js-regist form').animate({opacity:0},400,function(e){
+					$(this).html(inputarea).animate({opacity:1});
+				});
+			}
+
+			//使用者點擊送出簡訊驗證碼
+			$('#login_register').on('click','.js-sendsmscode',function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				//取得使用者輸入
+				var user_input = $('.js-smscode').val();
+				if(user_input == verify_num){
+					Page_loader(e,"../member/information.php #js-information",function(e){
+						//使用者填寫資訊
+						$('input[name="tel"]').val(phone_number);
+
+						$('#js-information').on('click','.js-informationbtn',function(e){
+							console.log('jsinformation');
+							e.preventDefault();
+							e.stopPropagation();
+
+							console.log(password);
+							console.log(phone_number);
+							// 取得填寫資訊
+							var memberinfo = $('.information-panel').serializeArray();
+							memberinfo.push({'name':'password','value':password},{'name':'username','value':phone_number});
+							// 解碼 (若使用serialize方法)
+							// memberinfo = decodeURIComponent(memberinfo,true);
+							
+							$.ajax({
+								type:'POST', //必填
+								url:'../crud/meberRegister.php',
+								dataType:'json',
+								data:{memberinfo:memberinfo},
+								success:function(userid, textStatus, xhr){
+									//  userid 格式：
+									// {result:[{id:'24'}]}
+									console.log('userid',userid);
+									// alert('註冊成功');
+
+									// 設定內存username
+									sessionStorage.setItem('useraccount',phone_number);
+									sessionStorage.setItem('userid',userid.result[0].id);
+									var username = userid.result[0].lastname+userid.result[0].firstname;
+									sessionStorage.setItem('username',username);
+									// 存入sesstion後資料會被"先"用tostring轉成字串，
+									// 如果是存入Object，則只會存入"字面直"[object object]
+									// 故要存object 需先轉字串JSON.stringify，getItem後再JSON.parse
+									// 參考：https://ithelp.ithome.com.tw/articles/10195522
+									
+									// 導向回首頁
+									setTimeout(function(){window.location.href='index.php';},2000);
+								},
+								error:function(data, textStatus, xhr){
+									console.log('失敗'+xhr)
+								},
+							}); 
+						});
+					},'yes');
+				}
+			});
+		}); //end-of-member-register
+
+		});
 	});
 });
 
 // 購物車頁面加上大小選項
+
+

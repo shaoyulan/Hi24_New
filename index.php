@@ -84,7 +84,7 @@
 							<li id="js-cartItem" class="js-cartItem hide">
 								<a href="product/product_detail.htm"><img src="images/small_product_list_08.jpg" alt="" /></a>
 								<a href="product/product_detail.htm" class="js-itemTitle">商品標題一</a>
-								<span>1 x <span class="js-itemPrice">$79.00</span></span>
+								<span ><small class="js-item-num-spicific">0</small><small>x </small></span><span class="js-itemPrice">$79.00</span>
 								<div class="clearfix"></div>
 							</li>
 						</ul>

@@ -19,56 +19,59 @@ if ($_POST['mode']=='add_cart'){
 	try{
 		$sql = 'SELECT `qty` FROM `cart` WHERE `productid`=:productid AND `detailid`=:detailid';
 		$statement = $pdo->prepare($sql);
-		$statement->bindValue(':productid',$cart[2]["productid"]);
-		$statement->bindValue(':detailid',$cart[3]["detailid"]);
+		$statement->bindValue(':productid',$cart[0]["productid"]);
+		$statement->bindValue(':detailid',$cart[0]["detailid"]);
 		$statement->execute();
-		$result = $statement->fetchAll(PDO::FETCH_ASSOC);
-		// echo $result; 
+		$result_qty = $statement->fetchAll(PDO::FETCH_ASSOC);
+		// $result_qty 格式;
+		// [["qty"=>0],[...],] 
 
-		if($result){
+		if($result_qty){
 			//需要更新數量
-			// $sql = 'UPDATE `cart` SET `qty`=:new_qty WHERE `productid`=:productid AND `detailid`=:detailid';
-			// $statement = $pdo->prepare($sql);
-			// $statement->bindValue(':qty',$cart[2]["productid"]);
-			// $statement->bindValue(':productid',$cart[2]["productid"]);
-			// $statement->bindValue(':detailid',$cart[3]["detailid"]);
-			// $statement->execute();
+			$sql = 'UPDATE `cart` SET `qty`=:new_qty WHERE `productid`=:productid AND `detailid`=:detailid';
+			$statement = $pdo->prepare($sql);
+			$new_quty = $result_qty[0]["qty"] + $cart[0]["qty"];
+			$statement->bindValue(':new_qty',$new_quty);
+			$statement->bindValue(':productid',$cart[0]["productid"]);
+			$statement->bindValue(':detailid',$cart[0]["detailid"]);
+			$result = $statement->execute();
 
 		}else{
-			// 需新增
+			// 需新增, 資料庫無同樣商品
+			// for ($i=0; $i <count($cart) ; $i++) { 
+				try{
+					$sql ='INSERT INTO `cart`(`memberid`, `orderdate`, `productid`, `detailid`, `itemName`, `price`, `size`, `color`, `qty`, `total`) VALUES (:memberid,:orderdate,:productid,:detailid,:itemName,:price,:size,:color,:qty,:total)';
+					$statement = $pdo->prepare($sql);
+					$statement->bindValue(':memberid',$cart[0]["memberid"]);
+					$statement->bindValue(':orderdate',$cart[0]["orderdate"]); 
+					$statement->bindValue(':productid',$cart[0]["productid"]);
+					$statement->bindValue(':detailid',$cart[0]["detailid"]);
+					$statement->bindValue(':itemName',$cart[0]["itemName"]);
+					$statement->bindValue(':price',$cart[0]["price"]);
+					$statement->bindValue(':size',$cart[0]["size"]);
+					$statement->bindValue(':color',$cart[0]["color"]);
+					$statement->bindValue(':qty',$cart[0]["qty"]);
+					$statement->bindValue(':total',$cart[0]["total"]); 
+
+					$result = $statement->execute();
+				}catch (PDOException $e){
+					print "ERROR".$e->getMessage();
+				}
+			// } end of for loop
+			
+			//should use " cause :category_main in $sql only accept "abc"
 		}
 
 	}catch(PDOException $e){
 		print "ERROR".$e->getMessage();
 	}
 
-	for ($i=0; $i <count($cart) ; $i++) { 
-		try{
-			$sql ='INSERT INTO `cart`(`memberid`, `orderdate`, `productid`, `detailid`, `itemName`, `price`, `size`, `color`, `qty`, `total`) VALUES (:memberid,:orderdate,:productid,:detailid,:itemName,:price,:size,:color,:qty,:total)';
-			$statement = $pdo->prepare($sql);
-			$statement->bindValue(':memberid',$cart[$i]["memberid"]);
-			$statement->bindValue(':orderdate',$cart[$i]["orderdate"]); 
-			$statement->bindValue(':productid',$cart[$i]["productid"]);
-			$statement->bindValue(':detailid',$cart[$i]["detailid"]);
-			$statement->bindValue(':itemName',$cart[$i]["itemName"]);
-			$statement->bindValue(':price',$cart[$i]["price"]);
-			$statement->bindValue(':size',$cart[$i]["size"]);
-			$statement->bindValue(':color',$cart[$i]["color"]);
-			$statement->bindValue(':qty',$cart[$i]["qty"]);
-			$statement->bindValue(':total',$cart[$i]["total"]); 
-
-			$statement->execute();
-		}catch (PDOException $e){
-			print "ERROR".$e->getMessage();
-		}
-	}
 	
-	//should use " cause :category_main in $sql only accept "abc"
 }
 // $statement->execute();
 // $data_filtered = $statement->fetchAll(PDO::FETCH_ASSOC);
 if($result){
-	echo json_encode($result);
+	echo json_encode($result_qty[0]["qty"]);
 } 
 // echo json_encode($data_filtered,JSON_NUMERIC_CHECK);
 

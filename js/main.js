@@ -299,7 +299,13 @@
 		$.post('../crud/dataFiltered.php', {memberid:$memberid,mode:'get_cart'}, function($cart, textStatus, xhr) {
 			// 修改全域
 			cart = $cart;
-			console.log('mid',$memberid);
+			console.log('cart',cart);
+
+			// 先清空殘留的商品、價格
+			$('.js-cartItem:not(#js-cartItem)').remove(); //殘留商品
+			$('.cart-btn a span').text('$0.00'); //紅區 價格
+			$('#cart-amount').text(0); //灰區 價格
+
 			//DB購物車有東西
 			if(cart.length > 0){
 				var cartInfo = $('.js-cartInfo'),
@@ -307,9 +313,12 @@
 					itemCount = 0, 
 					// 購物車現有金額 fetch current Cart total
 					currentP = 0;
+
 				
+
 				$.each(cart,function(index, item) {
-					//拿空範本
+
+					// 拿空範本
 					var itemRow = $('#js-cartItem').clone(),
 						// 購物車的最後一筆 Last item in cart
 						lastItem = $('.js-cartItem:last');
@@ -323,11 +332,18 @@
 					  	.find('.js-itemPrice').text(item.price)
 					  	// 加上productid、detailid
 					  	.end() 
+					  	.find('.js-item-num-spicific').text(item.qty)
+					  	.end()
 					  	//data-no 用於對應cart 陣列排序
 						.attr({'data-productid':item.productid,'data-detailid':item.detailid,'data-no':(index+1)});
 						// 購物車金額累加
-						currentP += item.price;
-						itemCount ++;
+						if(item.qty >1 ){
+							currentP = currentP + item.qty * item.price;
+						}else{
+							currentP += item.price;
+						}
+						
+						itemCount += item.qty;
 				});
 
 				// 更新購物車金額
@@ -429,14 +445,29 @@
 
 	// 網站初始載入，使用者是否存在
 	if(check_userExist()){
-		var user = check_userExist();
+		var user = check_userExist(),
+			login = $('.js-loginbtn'),
+			logout =$('.js-logoutbtn');
+
 		$('.js-loginbtn').html("<span style='color:red'>"+user['username']+"您好!</span>");
 
 		//顯示購物車資訊
 		renewCart(user['userid']);
 		$('.js-loginbtn').on('mouseenter',function(e){
-			$('.js-loginbtn').css({'display':'none'});
-			$('.js-logoutbtn').toggleClass('hidden');
+			// 先判斷logout是隱藏的，再做動作
+			if(logout.is('.hidden')){
+				login.css({'display':'none'});
+				logout.toggleClass('hidden');
+			}
+		});
+
+		$('.js-logoutbtn').on('mouseout',function(e){
+			// 先判斷login是隱藏的，再做動作
+			if(login.css('display') == 'none'){
+				logout.toggleClass('hidden');
+				login.css({'display':'block'});
+			}
+			
 		});
 	};
 
@@ -493,71 +524,44 @@
 				color = $('.color-buttons a.active img').data('title') || '', 
 				date = time('today');	
 
-				console.log(price);
 			// 判斷是在哪個頁面 (首頁: 加入/取消 商品詳細頁:加入)
 				// 詳細頁hasClass('buy') 永遠回傳false故皆為加入 OK
 			// 被選的商品是要取消 或 加入
 			if(target.hasClass('buy')){
 			//取消
-				// renew total number
-				$('#cart-amount').text(--itemNuber);
-				// cancel order so price -price
-				price = -price;
-				// 依productid detailid 取得購物車內的目標
-				var criteria = '.js-cartItem[data-productid="'+productid+'"]';
-					criteria += '[data-detailid="'+detailid+'"]';
-				var itemRow = $(criteria);
-				// 刪除cart array 對應
-				cart.splice([itemRow.data('no')],1);
-				// 刪除該筆item row
-				itemRow.remove();
+				// 呼叫Delet api 刪除商品
+				$.post('../crud/delete.php',{productid:productid,detailid:detailid},function(result,m,x){
+					// 刪除商品後，更新購物車
+					renewCart(sessionStorage.getItem('userid'));
+				});
 
 			}else{
 			//加入
-				// renew total number
-				itemNuber += qty;
-				$('#cart-amount').text(itemNuber);
-				
-				// 空的購物車HTML　Empty Cart HTML  這裡重覆var之後刪
-				itemRow = $('#js-cartItem').clone();
-				
-				itemRow // 購物車放入新的商品
-					.insertAfter(lastItem).removeAttr('id','js-cartItem').removeClass('hide')
-					// 修改標題
-					.find('.js-itemTitle').text(itemName)
-				  	// 修改金額
-				  	.end()
-				  	.find('.js-itemPrice').text(price)
-				  	// 加上productid、detailid
-				  	.end() 
-				  	//data-no 用於對應cart 陣列排序
-					.attr({'data-productid':productid,'data-detailid':detailid,'data-no':(itemCount-1)});
+				// 更新購物車陣列
+				  // price 先做清理
+				cart.push({
+					memberid:memberid,
+					orderdate:date,
+					productid:productid,
+					detailid:detailid,
+					itemName:itemName,
+					price:price,
+					size:size,
+					color:color,
+					qty:qty,
+					total:total
+				});
 
-					
-					// 更新購物車陣列
-					  // price 先做清理
-					cart.push({
-						memberid:memberid,
-						orderdate:date,
-						productid:productid,
-						detailid:detailid,
-						itemName:itemName,
-						price:price,
-						size:size,
-						color:color,
-						qty:qty,
-						total:total
-					});
+				// 更新資料庫購物車
+				var last = [];last.push(cart[cart.length-1])
+				$.post('../crud/create.php', {cart: last,mode:'add_cart'}, function(data, stextStatu, xhr) {
+					console.log(data);
+					// 新增商品後，更新購物車
+					renewCart(sessionStorage.getItem('userid'));
+				});
 
-					// 更新資料庫購物車
-
-					 var last = [];last.push(cart[cart.length-1])
-					$.post('../crud/create.php', {cart: last,mode:'add_cart'}, function(data, stextStatu, xhr) {
-						// console.log(data);
-					});
 			}
 			
-
 			// set btn to yellow bgc
 			if(target){
 				target.stop().toggleClass('buy');
