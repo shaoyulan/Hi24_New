@@ -333,6 +333,10 @@
 					  	// 加上productid、detailid
 					  	.end() 
 					  	.find('.js-item-num-spicific').text(item.qty)
+					  	.end() 
+					  	.find('.js-item-color-spicific').text(item.color)
+					  	.end() 
+					  	.find('.js-item-size-spicific').text(item.size)
 					  	.end()
 					  	//data-no 用於對應cart 陣列排序
 						.attr({'data-productid':item.productid,'data-detailid':item.detailid,'data-no':(index+1)});
@@ -365,7 +369,7 @@
 
 	}
 
-	// 購物車頁面
+	// 查看購物車
 	function cart_list_box(e,$userid){
 		if(e){
 			e.preventDefault();
@@ -376,11 +380,14 @@
 
 		Page_loader(e,"../shopping/cart_list_box.php",function(e){
 
-			// 從資料庫抓購物車 / 也可直接從全域cart
+			// 從資料庫抓購物車
+			var counter = 0;  // 紀錄目前在哪一個商品
+			var prev_item = ''; // 紀錄前一個商品的id
 			$.post('../crud/dataFiltered.php', {memberid:$userid,mode:'get_cart'}, function($cart, textStatus, xhr) {
 				// 取得購物清單(:not 範本)
 				$.each($cart,function(key,item){
 					// 貨幣格式化
+
 					var total = new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2 }).format(item.total);
 					var cartRow = $('#js-cartRowTmp').clone().removeAttr('id').insertAfter('#js-cartRowTmp');
 					// 更新資料
@@ -397,10 +404,34 @@
 							var option = document.createElement('option');
 							option.textContent = value.title;
 							option.value = value.title;
-							$('.js-color').append(option);
+							// 遇到顏色符合的選項 設定selected
+							if(item.color == value.title){
+								$(option).attr('selected','selected');
+							}
+							// 是否是不同的商品
+							if(item.id != prev_item){
+								//移到下一個商品列
+								counter++;
+							}
+							//新增至這個商品
+							$('.js-color:eq('+(counter)+')').append(option);
+
+
+							prev_item = item.id; // 儲存這次使用的商品id
 						});
+
+						// 若沒有設定顏色 代表 要預設第一個
+						if(item.color==''){
+							$('.js-color:eq('+(counter)+')').find('option:eq(0)').attr('selected','selected');
+						}
+
+						// 接著開始設定大小
+						
+
 					});
-					
+
+					// 設定數量
+					$('.qty:eq('+key+')').val(item.qty);
 				});
 			});
 

@@ -84,7 +84,14 @@
 							<li id="js-cartItem" class="js-cartItem hide">
 								<a href="product/product_detail.htm"><img src="images/small_product_list_08.jpg" alt="" /></a>
 								<a href="product/product_detail.htm" class="js-itemTitle">商品標題一</a>
-								<span ><small class="js-item-num-spicific">0</small><small>x </small></span><span class="js-itemPrice">$79.00</span>
+								<span >
+									<small class="js-item-num-spicific">0</small>
+									<small>x </small>
+									<small class="js-item-color-spicific"></small>
+									<small class="js-item-size-spicific"></small>
+								</span>
+								<span class="js-itemPrice">$79.00
+								</span>
 								<div class="clearfix"></div>
 							</li>
 						</ul>
@@ -189,7 +196,7 @@
 				<div class="tp-banner-container">
 					<div class="tp-banner">
 						<ul id="headerAdContainer">
-							<!-- Header-Ad goes here -->
+							
 						</ul>
 					</div>
 				</div>
