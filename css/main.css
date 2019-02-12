@@ -12,11 +12,14 @@
 	display: none;
 }
 
+
 /*cart page*/
 #js-cartRowTmp.hide{
 	display: none;
 }
-
+[disabled]{
+	color: #e0e0e0;
+}
 
 /*detail page*/
 .selectListOuterWrap .selectListInnerWrap .selectListTop {
