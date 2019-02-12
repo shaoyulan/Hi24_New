@@ -48,10 +48,10 @@
 	                </td>
 	                <td>
 	                <select class="size" name="size">
-							<option>S</option>
-							<option>M</option>
-							<option>L</option>
-							<option>XL</option>
+							<option disabled="disabled">S</option>
+							<option disabled="disabled">M</option>
+							<option disabled="disabled">L</option>
+							<option disabled="disabled">XL</option>
 						</select>
 	                </td>
 					<td>

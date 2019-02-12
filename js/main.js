@@ -299,7 +299,7 @@
 		$.post('../crud/dataFiltered.php', {memberid:$memberid,mode:'get_cart'}, function($cart, textStatus, xhr) {
 			// 修改全域
 			cart = $cart;
-			console.log('cart',cart);
+			// console.log('cart',cart);
 
 			// 先清空殘留的商品、價格
 			$('.js-cartItem:not(#js-cartItem)').remove(); //殘留商品
@@ -382,6 +382,8 @@
 
 			// 從資料庫抓購物車
 			var counter = 0;  // 紀錄目前在哪一個商品
+			var colorTitle = ''; // 紀錄目前商品顏色 若無會設定為第一個
+			var size =''; // 紀錄目前商品大小 若無會設定為第一個
 			var prev_item = ''; // 紀錄前一個商品的id
 			$.post('../crud/dataFiltered.php', {memberid:$userid,mode:'get_cart'}, function($cart, textStatus, xhr) {
 				// 取得購物清單(:not 範本)
@@ -404,9 +406,11 @@
 							var option = document.createElement('option');
 							option.textContent = value.title;
 							option.value = value.title;
+							
 							// 遇到顏色符合的選項 設定selected
 							if(item.color == value.title){
 								$(option).attr('selected','selected');
+								colorTitle = value.title;
 							}
 							// 是否是不同的商品
 							if(item.id != prev_item){
@@ -423,10 +427,25 @@
 						// 若沒有設定顏色 代表 要預設第一個
 						if(item.color==''){
 							$('.js-color:eq('+(counter)+')').find('option:eq(0)').attr('selected','selected');
+							colorTitle = value.title;
+							console.log('no');
 						}
-
 						// 接著開始設定大小
-						
+						let sizes = $('.size:eq('+(counter)+')');
+						$.post('../crud/dataFiltered.php', {productId:item.productid,colorTitle:item.color,mode:'get_size_avalible'}, function(data,t,x){
+							
+							$.each(data,function(key,value){
+								console.log('k',value.size);
+								sizes.find('option:contains('+value.size+')').attr('disabled',false);
+
+								sizes.find('option:contains('+item.size+')').attr('selected','selected')
+							});
+
+						});
+						// 若沒有設定大小 代表 要預設第一個
+						if(item.size==''){
+							sizes.find('option:not('[disabled]')').attr('selected','selected');
+						}
 
 					});
 
