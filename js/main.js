@@ -7,7 +7,7 @@
 	// 使用者是否存在
 	function check_userExist(){
 
-		if(sessionStorage.getItem('username')){
+		if(sessionStorage.getItem('userid')){
 			var user = [];
 			user['username'] = (sessionStorage.getItem('username'));
 			user['userid'] = (sessionStorage.getItem('userid'));
